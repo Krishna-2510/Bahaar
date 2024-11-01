@@ -9,7 +9,7 @@ export const GardenDetails = () => {
     
     return (
         <>
-            <StyledHeader>
+            {/* <StyledHeader>
                 <Navbar />
                 <StyledHeaderContent>
                     <StyledAuthHeading>Welcome - <StyledUserName>{userName}</StyledUserName></StyledAuthHeading>
@@ -26,7 +26,7 @@ export const GardenDetails = () => {
                 {gardens.map((garden) => <GardenCard key={garden.id} garden={garden} edit={false} gardenAdded={setAddingNewGarden} setNotification={setNotificationDetails} refreshGardens={setRefreshGardens} />)}
                 {addingNewGarden && <GardenCard edit={true} gardenAdded={setAddingNewGarden} setNotification={setNotificationDetails} refreshGardens={setRefresh}/>}
                 {notificationDetails.show && <NotificationBox variant={notificationDetails?.variant} message={notificationDetails?.message} closed={closed}/>}
-            </GardenContainer>
+            </GardenContainer> */}
 
         </>
     )
