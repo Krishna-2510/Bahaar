@@ -1,32 +1,49 @@
 import React, { useEffect, useState } from "react";
-import { FlexContainer, GardenContainer, StyledAuthHeading, StyledAuthText, StyledHeader, StyledHeaderContent, StyledHeaderText, StyledSpan, StyledUserName } from "../style/style";
+import { FlexContainer, GardenContainer, PlantContainer, StyledAuthHeading, StyledAuthText, StyledGardenDetails, StyledHeader, StyledHeaderContent, StyledHeaderText, StyledSpan, StyledUserName } from "../style/style";
 import { Navbar } from "../components/Navbar";
 import { MyButton } from "../components/MyButton";
 import AddIcon from '@mui/icons-material/Add';
 import { GardenCard } from "../components/GardenCard";
 import { NotificationBox } from "../components/NotificationBox";
+import { useLocation } from 'react-router-dom';
+import { PlantCard } from "../components/PlantCard";
+
 export const GardenDetails = () => {
+    
+    const location = useLocation();
+    const garden = location.state || {};
+    useEffect(() => {
+        console.log("Got this ", garden)
+        window.scroll(0,0)
+    },[garden])
     
     return (
         <>
-            {/* <StyledHeader>
+            <StyledHeader>
                 <Navbar />
                 <StyledHeaderContent>
-                    <StyledAuthHeading>Welcome - <StyledUserName>{userName}</StyledUserName></StyledAuthHeading>
-                    <MyButton text={'Add garden'} Icon={<AddIcon fontSize="medium" />} width={'150px'} action={() => setAddingNewGarden(true)} />
+                    <div>
+                    <StyledAuthHeading><StyledUserName>{garden.name}</StyledUserName></StyledAuthHeading>
+                    <div>
+                    <StyledGardenDetails color="white">Created on:</StyledGardenDetails>
+                    <StyledGardenDetails color="white">{garden.createdOn}</StyledGardenDetails>
+                    </div>
+                    <div>
+                    <StyledGardenDetails color="white">Total plants:</StyledGardenDetails>
+                    <StyledGardenDetails color="white">{garden.numberOfPlants}</StyledGardenDetails>
+                    </div>
+                    </div>
+                    <MyButton text={'Add plant'} Icon={<AddIcon fontSize="medium" />} width={'150px'} action={() => {}} />
                 </StyledHeaderContent>
             </StyledHeader>
-            <GardenContainer>
-                {gardens.length === 0 && !addingNewGarden &&
-                <FlexContainer>
-                    <StyledAuthHeading>You don't have any gardens</StyledAuthHeading>
-                    <StyledAuthText color="#A5A5A5">Create your first garden now. <StyledSpan onClick={() => setAddingNewGarden(true)}>Create</StyledSpan></StyledAuthText>
-                </FlexContainer>
-                }
-                {gardens.map((garden) => <GardenCard key={garden.id} garden={garden} edit={false} gardenAdded={setAddingNewGarden} setNotification={setNotificationDetails} refreshGardens={setRefreshGardens} />)}
-                {addingNewGarden && <GardenCard edit={true} gardenAdded={setAddingNewGarden} setNotification={setNotificationDetails} refreshGardens={setRefresh}/>}
-                {notificationDetails.show && <NotificationBox variant={notificationDetails?.variant} message={notificationDetails?.message} closed={closed}/>}
-            </GardenContainer> */}
+            <PlantContainer>
+                <PlantCard></PlantCard>
+                <PlantCard></PlantCard>
+                <PlantCard></PlantCard>
+                <PlantCard></PlantCard>
+                <PlantCard></PlantCard>
+
+            </PlantContainer>
 
         </>
     )

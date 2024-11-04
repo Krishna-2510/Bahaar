@@ -8,7 +8,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { getTodaysDate } from "../utils/util";
 
-export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refreshGardens}) => {
+export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refreshGardens, onClickHandler}) => {
 
     const [imagesrc, setImagesrc] = useState('');
     const [gardenInput, setGardenInput] = useState({ gardenName: '', imageFile: '' });
@@ -96,7 +96,7 @@ export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refresh
     }
 
     return (
-        <StyledGardenCard onClick={() => {console.log("on this garden = ", garden)}}>
+        <StyledGardenCard onClick={onClickHandler}>
             {!edit ?
                 <>
                     <GardenDataContainer>
@@ -105,10 +105,11 @@ export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refresh
                         <StyledGardenDetails color="#749F2A">{garden.createdOn}</StyledGardenDetails>
                         <br />
                         <StyledGardenDetails color="white">Total plants: </StyledGardenDetails>
-                        <StyledGardenDetails color="#749F2A">{garden.plants.length}</StyledGardenDetails>
+                        <StyledGardenDetails color="#749F2A">{garden.numberOfPlants}</StyledGardenDetails>
                         <br />
                         <MyButton text={'Add plant'} Icon={<AddIcon fontSize="medium" />} width={'150px'} />
-                        <StyledDelete><DeleteIcon htmlColor="white" onClick={() => {
+                        <StyledDelete><DeleteIcon htmlColor="white" onClick={(e) => {
+                            e.stopPropagation()
                             if(window.confirm(`Are you sure you want to delete ${garden.name} ?`))
                             handleDelete();
                         }}/></StyledDelete>

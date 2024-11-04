@@ -16,9 +16,19 @@ public class Plant {
     private String water;
     private String sunlight;
     private String fertilizer;
-    private String note;
-    private String imageUrl;
-    private List<Plant> history;
+	private String note;
+	private String imageUrl;
+
+	public Plant(String gardenId, String name, String water, String sunlight, String fertilizer, String note, String imageUrl, String addedOn) {
+		this.gardenId = gardenId;
+		this.name = name;
+		this.water = water;
+		this.sunlight = sunlight;
+		this.fertilizer = fertilizer;
+		this.note = note;
+		this.imageUrl = imageUrl;
+		this.addedOn = addedOn;
+	}
     
 	public String getId() {
 		return id;
@@ -67,12 +77,6 @@ public class Plant {
 	}
 	public void setNote(String note) {
 		this.note = note;
-	}
-	public List<Plant> getHistory() {
-		return history;
-	}
-	public void setHistory(List<Plant> history) {
-		this.history = history;
 	}
 	public String getImageUrl() {
 		return imageUrl;

@@ -218,7 +218,7 @@ const StyledUserName = styled.span`
 
 const GardenContainer = styled.div`
     padding: 70px 10px;
-    min-height: 50%;
+    min-height: 60%;
     background: #1D201B;
 `
 const StyledGardenCard = styled.div`
@@ -304,7 +304,7 @@ const StyledNotification = styled.div`
     align-items: center;
     padding: 10px 20px;
     border-radius: 32px;
-    border: 2px solid;
+    border: 1px solid;
     border-color: ${({outline}) => outline};
     margin: 30px auto;
     box-shadow: 4px 4px 8px rgb(0, 0 ,0 ,80%);
@@ -327,7 +327,51 @@ const NotifHeading = styled.span`
     font-size:24px;
     margin: 0 5px;
 `
+//---------------------------------------------------------------------------------------------------------------------------------------------------------
 
+const PlantContainer = styled.div`
+    padding: 70px 120px;
+    min-height: 60%;
+    background: #1D201B;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 35px;
+`
+const PlantWrapper = styled.div`
+    height:24rem; 
+    margin: 10px;
+    box-shadow: 4px 4px 8px rgb(0, 0 ,0 ,80%);
+    background-color: #161815;
+    border-radius: 30px;
+    flex: 1 1 30%; /* Adjust percentage to control number of items per row */
+    max-width: 22rem;
+    cursor: pointer;
+    &:hover {
+        box-shadow: 8px 8px 10px rgb(0, 0 ,0 );
+    }
+`
+
+const StyledPlantName = styled.h1`
+    color: white;
+    margin: 1px;
+    padding-left: 1.5rem;
+    font-size: 1.8rem;
+`
+
+const StyledPlantAge = styled.h2`
+    color: white;
+    margin: 1px;
+    font-size: 1.5rem;
+    padding-left: 1.5rem;
+    font-weight: 400;
+`
+
+const PlantImageContainer = styled.div`
+    height: 74%;
+`
+const PlantInfoContainer = styled.div`
+    height: 25%;
+`
 export {
     FullLandingScreen,
     StyledMainHeading,
@@ -360,5 +404,11 @@ export {
     StyledNotifMessage,
     NotifDetails,
     NotifHeading,
-    StyledDelete
+    StyledDelete,
+    PlantContainer,
+    PlantWrapper,
+    StyledPlantAge,
+    StyledPlantName,
+    PlantInfoContainer,
+    PlantImageContainer
 }

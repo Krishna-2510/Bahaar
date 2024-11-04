@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { FlexContainer, GardenContainer, StyledAuthHeading, StyledAuthText, StyledHeader, StyledHeaderContent, StyledHeaderText, StyledSpan, StyledUserName } from "../style/style";
+// import { useSelector } from "react-redux";
+import { FlexContainer, GardenContainer, StyledAuthHeading, StyledAuthText, StyledHeader, StyledHeaderContent, StyledSpan, StyledUserName } from "../style/style";
 import { Navbar } from "../components/Navbar";
 import { MyButton } from "../components/MyButton";
 import AddIcon from '@mui/icons-material/Add';
 import { GardenCard } from "../components/GardenCard";
 import { NotificationBox } from "../components/NotificationBox";
+import { useNavigate } from "react-router-dom";
+
 export const Account = () => {
     // const loggedInUser = useSelector(state => state.user);
     const userName = sessionStorage.getItem('userName');
@@ -19,6 +21,7 @@ export const Account = () => {
         message: ''
     });
     const [refreshGardens, setRefreshGardens] = useState(false);
+    const navigate = useNavigate();
 
     // useEffect(() => {
     //     console.log("SHow notif = ", showNotif);
@@ -50,7 +53,11 @@ export const Account = () => {
     useEffect(() => {
         if(refreshGardens)
             getGardens();
-    },[refreshGardens])
+    },[refreshGardens]);
+
+    const loadGardenDetails = (garden) => {
+        navigate('/bahaar/garden', {state: garden})
+    }
 
     return (
         <>
@@ -69,9 +76,26 @@ export const Account = () => {
                 </FlexContainer>
                 }
                 {gardens.map((garden) => 
-                <GardenCard key={garden.id} garden={garden} edit={false} gardenAdded={setAddingNewGarden} setNotification={setNotificationDetails} refreshGardens={setRefreshGardens}/>)}
-                {addingNewGarden && <GardenCard edit={true} gardenAdded={setAddingNewGarden} setNotification={setNotificationDetails} refreshGardens={setRefreshGardens}/>}
-                {notificationDetails.show && <NotificationBox variant={notificationDetails?.variant} message={notificationDetails?.message} closed={closed}/>}
+                <GardenCard key={garden.id} 
+                            garden={garden} edit={false} 
+                            gardenAdded={setAddingNewGarden} 
+                            setNotification={setNotificationDetails} 
+                            refreshGardens={setRefreshGardens}
+                            onClickHandler={() => loadGardenDetails(garden)}/>
+                )}
+
+                {addingNewGarden && 
+                <GardenCard edit={true} 
+                            gardenAdded={setAddingNewGarden} 
+                            setNotification={setNotificationDetails} 
+                            refreshGardens={setRefreshGardens}/>
+                }
+
+                {notificationDetails.show && 
+                <NotificationBox variant={notificationDetails?.variant} 
+                                    message={notificationDetails?.message} 
+                                    closed={closed}/>
+                }
             </GardenContainer>
         </>
     )

@@ -14,17 +14,18 @@ public class Garden {
 	private String name;
 	private String createdOn;
 	private String imageUrl;
-	private List<Plant> plants;
+	private int numberOfPlants;
 	
 	public String getId() {
 		return id;
 	}
-	public Garden(String name, String imageUrl, String userId, String createdOn) {
+	public Garden(String name, String imageUrl, String userId, String createdOn, int numberOfPlants) {
 		super();
 		this.name = name;
 		this.imageUrl = imageUrl;
 		this.userId = userId;
 		this.createdOn = createdOn;
+		this.numberOfPlants = numberOfPlants;
 	}
 	public void setId(String id) {
 		this.id = id;
@@ -47,20 +48,18 @@ public class Garden {
 	public void setCreatedOn(String createdOn) {
 		this.createdOn = createdOn;
 	}
-	public List<Plant> getPlants() {
-		return plants;
-	}
-	public void setPlants(List<Plant> plants) {
-		this.plants = plants;
-	}
 	public String getImageUrl() {
 		return imageUrl;
 	}
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
-	
-	
-    
-    
+
+	public int getNumberOfPlants() {
+		return numberOfPlants;
+	}
+
+	public void setNumberOfPlants(int numberOfPlants) {
+		this.numberOfPlants = numberOfPlants;
+	}
 }

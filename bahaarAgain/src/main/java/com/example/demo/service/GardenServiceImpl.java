@@ -32,9 +32,7 @@ public class GardenServiceImpl implements GardenService{
 		LocalDate currentDate = LocalDate.now();
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String formattedDate = currentDate.format(formatter);
-	    Garden garden = new Garden(name, imageUrl, userId, formattedDate);
-	    garden.setPlants(new ArrayList<>());
-	    
+	    Garden garden = new Garden(name, imageUrl, userId, formattedDate, 0);
 	    gardenRepo.save(garden); 
 	    return garden;
 	}
