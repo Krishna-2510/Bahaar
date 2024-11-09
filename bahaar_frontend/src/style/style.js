@@ -336,9 +336,10 @@ const PlantContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 35px;
+    align-items: flex-start;
 `
 const PlantWrapper = styled.div`
-    height:24rem; 
+    min-height: 24rem; 
     margin: 10px;
     box-shadow: 4px 4px 8px rgb(0, 0 ,0 ,80%);
     background-color: #161815;
@@ -351,26 +352,77 @@ const PlantWrapper = styled.div`
     }
 `
 
-const StyledPlantName = styled.h1`
+const StyledPlantName = styled.div`
     color: white;
     margin: 1px;
     padding-left: 1.5rem;
-    font-size: 1.8rem;
+    font-size: 2.2rem;
+    font-weight: bold;
 `
 
-const StyledPlantAge = styled.h2`
+const StyledPlantInfo = styled.div`
     color: white;
     margin: 1px;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     padding-left: 1.5rem;
     font-weight: 400;
 `
 
 const PlantImageContainer = styled.div`
-    height: 74%;
+    height: 20rem;
 `
 const PlantInfoContainer = styled.div`
-    height: 25%;
+    min-height: 1rem;
+`
+
+const PlantNameInput = styled.input`
+    width: 90%;
+    border: none;
+    font-size: 35px;
+    background: #161815;
+    margin: 10px 18px;
+    font-weight: bold;
+    color: white;
+    font-family: 'Jaldi';
+
+    &::placeholder {
+        color: #535353;
+    };
+
+    &:focus {
+        outline: none;
+    }
+        
+`
+
+const StyledSelect = styled.select`
+   margin: 10px;
+    width: 90%;
+    font-size: 1.4rem;
+    background: #161815;
+    color: ${({ selected }) => (selected === 'Select an option' ? '#535353' : 'white')};
+    border: none;
+    appearance: none; 
+    padding: 10px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="white" d="M4 6l4 4 4-4z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 24px; 
+`
+
+const StyledPlantInfoInput = styled.div`
+    display: flex;
+    align-items: center;
+`
+
+const StyledEmptyImageContainer = styled.div`
+    height: 20rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #535353; 
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
 `
 export {
     FullLandingScreen,
@@ -407,8 +459,12 @@ export {
     StyledDelete,
     PlantContainer,
     PlantWrapper,
-    StyledPlantAge,
+    StyledPlantInfo,
     StyledPlantName,
     PlantInfoContainer,
-    PlantImageContainer
+    PlantImageContainer,
+    PlantNameInput,
+    StyledSelect,
+    StyledPlantInfoInput,
+    StyledEmptyImageContainer
 }

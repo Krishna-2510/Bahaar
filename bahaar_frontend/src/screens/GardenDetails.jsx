@@ -16,6 +16,8 @@ export const GardenDetails = () => {
         console.log("Got this ", garden)
         window.scroll(0,0)
     },[garden])
+
+    const [addingNewPlant, setAddingNewPlant] = useState(false);
     
     return (
         <>
@@ -33,16 +35,15 @@ export const GardenDetails = () => {
                     <StyledGardenDetails color="white">{garden.numberOfPlants}</StyledGardenDetails>
                     </div>
                     </div>
-                    <MyButton text={'Add plant'} Icon={<AddIcon fontSize="medium" />} width={'150px'} action={() => {}} />
+                    <MyButton text={'Add plant'} Icon={<AddIcon fontSize="medium" />} width={'150px'} action={() => setAddingNewPlant(true)} />
                 </StyledHeaderContent>
             </StyledHeader>
             <PlantContainer>
-                <PlantCard></PlantCard>
-                <PlantCard></PlantCard>
-                <PlantCard></PlantCard>
-                <PlantCard></PlantCard>
-                <PlantCard></PlantCard>
-
+                <PlantCard edit={false}></PlantCard>
+                <PlantCard edit={false}></PlantCard>
+                <PlantCard edit={false}></PlantCard>
+                <PlantCard edit={false}></PlantCard>
+                {addingNewPlant && <PlantCard edit={true}></PlantCard>}
             </PlantContainer>
 
         </>
