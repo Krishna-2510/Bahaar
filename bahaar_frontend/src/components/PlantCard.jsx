@@ -1,22 +1,31 @@
 import React, { useEffect, useRef, useState } from "react";
-import { PlantImageContainer, PlantInfoContainer, PlantNameInput, PlantWrapper, StyledButton, StyledButtonContent, StyledEmptyImageContainer, StyledPlantInfo, StyledPlantInfoInput, StyledPlantName, StyledSelect } from "../style/style";
+import { PlantImageContainer, PlantInfoContainer, PlantNameInput, PlantWrapper, StyledButton, StyledButtonContent, StyledDelete, StyledEmptyImageContainer, StyledPlantInfo, StyledPlantInfoInput, StyledPlantName, StyledSelect, StyledTextarea } from "../style/style";
 import AddIcon from '@mui/icons-material/Add';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import moneyPlantImage from '../images/money-plant.jpg'; // Adjust the path based on your project structure
 import { MyButton } from "./MyButton";
 import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/Delete';
+import axios from "axios";
+import { calculateAge } from "../utils/util";
+import { fertilizerOptions, sunlightOptions, waterOptions } from "../utils/constantData";
 
 
-export const PlantCard = ({ plant, edit }) => {
+export const PlantCard = ({ plant, gardenId, edit, plantAdded, refreshPlants, setNotification }) => {
+    
+    console.log('GARDEN ID =', gardenId)
 
-    useEffect(() => {
-        if(edit){
-            if (plantNameRef.current) {
-                
-                plantNameRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Bring focus to the textarea
-            }
+    const [imagesrc, setImagesrc] = useState('');
+    const fetchImage = async () => {
+        try {
+            const response = await axios.get(plant.imageUrl);
+            const base64Image = `data:image/jpeg;base64,${response.data.data}`;
+            setImagesrc(base64Image);
         }
-    }, edit);
+        catch (e) {
+            console.log(e);
+        }
+    };
 
     const plantNameRef = useRef(null);
 
@@ -28,33 +37,9 @@ export const PlantCard = ({ plant, edit }) => {
         water: 'Select an option',
         sunlight: 'Select an option',
         fertilizer: 'Select an option',
-        note: ''
+        note: '',
+        imageFile: ''
     })
-
-    const waterOptions = [
-        { value: 'daily', label: 'Daily' },
-        { value: 'twiceAWeek', label: 'Twice a week' },
-        { value: 'weekly', label: 'Weeklly' },
-        { value: 'biweekly', label: 'Biweekly' },
-        { value: 'monthly', label: 'Monthly' },
-        { value: 'onlyWhenDry', label: 'Only when dry' },
-    ];
-
-    const sunlightOptions = [
-        { value: 'fullSun', label: 'Full sun' },
-        { value: 'partialSun', label: 'Partial sun' },
-        { value: 'partialShade', label: 'Partial shade' },
-        { value: 'fullShade', label: 'Full shade' },
-        { value: 'indirectSunlight', label: 'Indirect sunlight' },
-        { value: 'lowLight', label: 'Low light' },
-    ];
-
-    const fertilizerOptions = [
-        { value: 'weekly', label: 'Weeklly' },
-        { value: 'biweekly', label: 'Biweekly' },
-        { value: 'monthly', label: 'Monthly' },
-        { value: 'onlyWhenNeeded', label: 'Only when needed' },
-    ];
 
     const handleClick = () => {
         hiddenFileInput.current.click();
@@ -68,16 +53,88 @@ export const PlantCard = ({ plant, edit }) => {
         }
     };
 
+    useEffect(() => {
+        if(edit){
+            setTimeout(() => {
+                if (plantNameRef.current) {
+                plantNameRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Bring focus to the textarea
+            }
+            },10)
+        }
+        else{
+            fetchImage()
+        }
+    }, [edit]);
+
+    const handleSave = async () => {
+
+        console.log("THIS IS THE DATA = ", plantInput, 'And this is the gerden id ', gardenId)
+        try {
+            const formData = new FormData();
+            formData.append("image", plantInput.imageFile);
+            formData.append("water", plantInput.water);
+            formData.append("sunlight", plantInput.sunlight);
+            formData.append("fertilizer", plantInput.fertilizer);
+            formData.append("name", plantInput.plantName);
+            formData.append("note", plantInput.note);
+            formData.append("gardenId", gardenId);
+
+            await axios.post('http://localhost:8080/addPlant', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            
+            plantAdded(false);
+            setTimeout(() => {
+                setNotification({
+                    show: true,
+                    variant: 'success',
+                    message: 'new plant added'
+                });
+                window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+            }, '500');
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+
+    const handleDelete = async () => {
+        try{
+           const res = await axios.delete(`http://localhost:8080/deletePlant/${gardenId}/${plant.id}`);
+           console.log("After res = ", res);
+           refreshPlants(true);
+           setNotification({
+               show: true,
+               variant: 'success',
+               message: 'plant deleted'
+           });
+        }
+        catch(e){
+           console.log(e);
+        }
+   }
+
+
+
     return (
         !edit ?
             <PlantWrapper>
                 <PlantImageContainer>
-                    <img style={{ width: '100%', height: '100%', objectFit: 'cover', borderTopLeftRadius: '30px', borderTopRightRadius: '30px' }} src={moneyPlantImage} alt="Money Plant" />
+                    <img style={{ width: '100%', height: '100%', objectFit: 'cover', borderTopLeftRadius: '30px', borderTopRightRadius: '30px' }} src={imagesrc} alt="Money Plant" />
                 </PlantImageContainer>
                 <PlantInfoContainer>
-                    <StyledPlantName>Money plant</StyledPlantName>
-                    <StyledPlantInfo>Age: 9 months</StyledPlantInfo>
+                    <StyledPlantName>{plant.name}</StyledPlantName>
+                    <StyledPlantInfo>Age: {calculateAge(plant.addedOn)}</StyledPlantInfo>
                 </PlantInfoContainer>
+                <StyledDelete>
+                    <DeleteIcon htmlColor="white" onClick={(e) => {
+                            e.stopPropagation()
+                            if(window.confirm(`Are you sure you want to delete ${plant.name} ?`))
+                            handleDelete();
+                        }}/>
+                </StyledDelete>
             </PlantWrapper>
             :
             <PlantWrapper>
@@ -120,9 +177,13 @@ export const PlantCard = ({ plant, edit }) => {
                     </StyledSelect>
                 </StyledPlantInfoInput>
                 <StyledPlantInfo>Note:</StyledPlantInfo>
-                <textarea style={{background: '#535353', margin: '0.5rem 1.5rem', color: 'white', fontSize: '1.4rem', minHeight:'15rem', width: '85%', borderRadius: '15px', padding: '10px', resize: 'none', fontFamily: 'Jaldi' }}>
-                </textarea>
-                <MyButton text={'Save'} Icon={<SaveIcon fontSize="medium" />} width={'120px'} action={() => {}} />
+                <StyledTextarea value={plantInput.note} onChange={(e) => setPlantInput({...plantInput, note: e.target.value})}/>
+                <MyButton text={'Save'} Icon={<SaveIcon fontSize="medium" />} width={'120px'} action={handleSave} />
+                <StyledDelete>
+                    <DeleteIcon htmlColor="white" onClick={(e) => {
+                            plantAdded(false)
+                        }}/>
+                </StyledDelete>
             </PlantWrapper>
 
     )

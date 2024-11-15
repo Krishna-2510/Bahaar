@@ -39,9 +39,9 @@ public class PlantController {
         return new ResponseEntity<>(plant, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/deletePlant/{plantId}")
-    public ResponseEntity<String> deletePlant(@PathVariable String plantId){
-        String response = plantService.deletePlant(plantId);
+    @DeleteMapping("/deletePlant/{gardenId}/{plantId}")
+    public ResponseEntity<String> deletePlant(@PathVariable String gardenId, @PathVariable String plantId){
+        String response = plantService.deletePlant(plantId, gardenId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

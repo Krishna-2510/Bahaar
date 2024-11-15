@@ -349,7 +349,8 @@ const PlantWrapper = styled.div`
     cursor: pointer;
     &:hover {
         box-shadow: 8px 8px 10px rgb(0, 0 ,0 );
-    }
+    };
+    position: relative;
 `
 
 const StyledPlantName = styled.div`
@@ -424,6 +425,19 @@ const StyledEmptyImageContainer = styled.div`
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
 `
+
+const StyledTextarea = styled.textarea`
+    background: #535353;
+    margin: 0.5rem 1.5rem;
+    color: white;
+    font-size: 1.4rem;
+    min-height:15rem;
+    width: 80%;
+    border-radius: 15px;
+    padding: 10px;
+    resize: none;
+    font-family: Jaldi;
+`
 export {
     FullLandingScreen,
     StyledMainHeading,
@@ -466,5 +480,6 @@ export {
     PlantNameInput,
     StyledSelect,
     StyledPlantInfoInput,
-    StyledEmptyImageContainer
+    StyledEmptyImageContainer,
+    StyledTextarea
 }

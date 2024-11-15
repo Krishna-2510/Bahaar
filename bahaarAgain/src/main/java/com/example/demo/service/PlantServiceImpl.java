@@ -66,8 +66,11 @@ public class PlantServiceImpl implements PlantService {
     }
 
     @Override
-    public String deletePlant(String plantId) {
+    public String deletePlant(String plantId, String gardenId) {
         plantRepo.deleteById(plantId);
+        Garden garden = gardenRepo.findById(gardenId).orElseThrow();
+        garden.setNumberOfPlants(garden.getNumberOfPlants() - 1);
+        gardenRepo.save(garden);
         return plantId;
     }
 }

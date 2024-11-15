@@ -7,6 +7,7 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { getTodaysDate } from "../utils/util";
+import { useNavigate } from "react-router-dom";
 
 export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refreshGardens, onClickHandler}) => {
 
@@ -16,6 +17,7 @@ export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refresh
     const today = getTodaysDate();
     const hiddenFileInput = useRef(null);
     const [imageName, setImageName] = useState('');
+    const navigate = useNavigate();
 
     const fetchImage = async () => {
         try {
@@ -107,7 +109,10 @@ export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refresh
                         <StyledGardenDetails color="white">Total plants: </StyledGardenDetails>
                         <StyledGardenDetails color="#749F2A">{garden.numberOfPlants}</StyledGardenDetails>
                         <br />
-                        <MyButton text={'Add plant'} Icon={<AddIcon fontSize="medium" />} width={'150px'} />
+                        <MyButton text={'Add plant'} Icon={<AddIcon fontSize="medium" />} width={'150px'} action = {(e) => {
+                            e.stopPropagation();
+                            navigate('/bahaar/garden', {state: {garden, edit: true}})
+                        }} />
                         <StyledDelete><DeleteIcon htmlColor="white" onClick={(e) => {
                             e.stopPropagation()
                             if(window.confirm(`Are you sure you want to delete ${garden.name} ?`))

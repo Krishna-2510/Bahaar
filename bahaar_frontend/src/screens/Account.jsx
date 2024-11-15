@@ -56,7 +56,7 @@ export const Account = () => {
     },[refreshGardens]);
 
     const loadGardenDetails = (garden) => {
-        navigate('/bahaar/garden', {state: garden})
+        navigate('/bahaar/garden', {state: {garden, edit: false}})
     }
 
     return (
