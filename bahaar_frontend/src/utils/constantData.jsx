@@ -22,3 +22,28 @@ export const fertilizerOptions = [
     { value: 'monthly', label: 'Monthly' },
     { value: 'onlyWhenNeeded', label: 'Only when needed' },
 ];
+
+export const waterMapping = {
+    daily: 'Daily',
+    twiceAWeek: 'Twice a week',
+    weekly: 'Weekly',
+    biweekly: 'Biweekly',
+    monthly: 'Monthly',
+    onlyWhenDry: 'Only when dry'
+}
+
+export const sunlightMapping = {
+    fullSun: 'Full sun',
+    partialSun: 'Partial sun',
+    partialShade: 'Partial shade',
+    fullShade: 'Full shade',
+    indirectSunlight: 'Indirect sunlight',
+    lowLight: 'Low light'
+}
+
+export const fertilizerMapping = {
+    weekly: 'Weekly',
+    biweekly: 'Biweekly',
+    monthly: 'Monthly',
+    onlyWhenNeeded: 'Only when needed'
+}

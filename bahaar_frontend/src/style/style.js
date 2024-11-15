@@ -438,6 +438,48 @@ const StyledTextarea = styled.textarea`
     resize: none;
     font-family: Jaldi;
 `
+
+// ------============================================================================================================
+
+const PlantDetailsContainer = styled.div`
+    background: #1D201B;
+    min-height: 100vh
+`
+
+const MainContainer = styled.div`
+    display: flex;
+    padding: 4rem;
+    gap: 2rem;
+    flex-grow: 1;
+    height: 80vh;
+`
+
+const PlantDataContainer = styled.div`
+    width: 50%;
+    position: relative;
+    padding: 10px;
+`
+
+const StyledPlantData1 = styled.div`
+    color: white;
+    font-size: 3.5rem;
+    margin: 0 0 3px 0;
+`
+const StyledPlantData2 = styled.div`
+    color: white;
+    font-size: 2rem;
+    margin: 0 0 3px 0;
+`
+const StyledPlantData3 = styled.span`
+    color: #749F2A;
+`
+const StyledPlantNote = styled.div`
+    color: white;
+    font-size: 1.6rem;
+    margin: 0 0 3px 0;
+    font-weight: normal 
+`
+
 export {
     FullLandingScreen,
     StyledMainHeading,
@@ -481,5 +523,12 @@ export {
     StyledSelect,
     StyledPlantInfoInput,
     StyledEmptyImageContainer,
-    StyledTextarea
+    StyledTextarea,
+    PlantDetailsContainer,
+    MainContainer,
+    StyledPlantData1,
+    StyledPlantData2,
+    StyledPlantData3,
+    StyledPlantNote,
+    PlantDataContainer
 }

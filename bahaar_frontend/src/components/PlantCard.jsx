@@ -1,19 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import { PlantImageContainer, PlantInfoContainer, PlantNameInput, PlantWrapper, StyledButton, StyledButtonContent, StyledDelete, StyledEmptyImageContainer, StyledPlantInfo, StyledPlantInfoInput, StyledPlantName, StyledSelect, StyledTextarea } from "../style/style";
-import AddIcon from '@mui/icons-material/Add';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
-import moneyPlantImage from '../images/money-plant.jpg'; // Adjust the path based on your project structure
 import { MyButton } from "./MyButton";
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from "axios";
 import { calculateAge } from "../utils/util";
 import { fertilizerOptions, sunlightOptions, waterOptions } from "../utils/constantData";
+import { useNavigate } from "react-router-dom";
 
 
 export const PlantCard = ({ plant, gardenId, edit, plantAdded, refreshPlants, setNotification }) => {
     
-    console.log('GARDEN ID =', gardenId)
+    //console.log('GARDEN ID =', gardenId)
+
+    const navigate = useNavigate();
 
     const [imagesrc, setImagesrc] = useState('');
     const fetchImage = async () => {
@@ -116,11 +117,14 @@ export const PlantCard = ({ plant, gardenId, edit, plantAdded, refreshPlants, se
         }
    }
 
+   const loadPlantDetails = (plant) => {
+    navigate('/bahaar/plant', {state: { plant, image: imagesrc }})
+}
 
 
     return (
         !edit ?
-            <PlantWrapper>
+            <PlantWrapper onClick={() => loadPlantDetails(plant, imagesrc)}>
                 <PlantImageContainer>
                     <img style={{ width: '100%', height: '100%', objectFit: 'cover', borderTopLeftRadius: '30px', borderTopRightRadius: '30px' }} src={imagesrc} alt="Money Plant" />
                 </PlantImageContainer>
@@ -177,7 +181,7 @@ export const PlantCard = ({ plant, gardenId, edit, plantAdded, refreshPlants, se
                     </StyledSelect>
                 </StyledPlantInfoInput>
                 <StyledPlantInfo>Note:</StyledPlantInfo>
-                <StyledTextarea value={plantInput.note} onChange={(e) => setPlantInput({...plantInput, note: e.target.value})}/>
+                <StyledTextarea maxLength={246} value={plantInput.note} onChange={(e) => setPlantInput({...plantInput, note: e.target.value})}/>
                 <MyButton text={'Save'} Icon={<SaveIcon fontSize="medium" />} width={'120px'} action={handleSave} />
                 <StyledDelete>
                     <DeleteIcon htmlColor="white" onClick={(e) => {

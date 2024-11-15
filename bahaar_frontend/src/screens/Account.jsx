@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-// import { useSelector } from "react-redux";
 import { FlexContainer, GardenContainer, StyledAuthHeading, StyledAuthText, StyledHeader, StyledHeaderContent, StyledSpan, StyledUserName } from "../style/style";
 import { Navbar } from "../components/Navbar";
 import { MyButton } from "../components/MyButton";
@@ -10,7 +9,6 @@ import { NotificationBox } from "../components/NotificationBox";
 import { useNavigate } from "react-router-dom";
 
 export const Account = () => {
-    // const loggedInUser = useSelector(state => state.user);
     const userName = sessionStorage.getItem('userName');
     const userId = sessionStorage.getItem('userId');
     const [gardens, setGardens] = useState([]);
@@ -20,12 +18,9 @@ export const Account = () => {
         variant: null,
         message: ''
     });
+    
     const [refreshGardens, setRefreshGardens] = useState(false);
     const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     console.log("SHow notif = ", showNotif);
-    // },[showNotif]);
 
     const getGardens = async () => {
         try {
