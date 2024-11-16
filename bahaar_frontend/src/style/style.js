@@ -180,7 +180,7 @@ const StyledHeader = styled.div`
 height:30%;
 width: 100%;
 position:relative;
-background-image: url(${roundLeavesImage});
+background-image:  url(${roundLeavesImage});
 background-size: cover;
 background-position: center;
 z-index: 0;
@@ -340,8 +340,8 @@ const PlantContainer = styled.div`
 `
 const PlantWrapper = styled.div`
     min-height: 24rem; 
-    margin: 10px;
-    box-shadow: 4px 4px 8px rgb(0, 0 ,0 ,80%);
+    // margin: 10px;
+    box-shadow: ${({isActive}) => isActive ? 'none' : '4px 4px 8px rgb(0, 0 ,0 ,80%)'};
     background-color: #161815;
     border-radius: 30px;
     flex: 1 1 30%; /* Adjust percentage to control number of items per row */
@@ -351,6 +351,9 @@ const PlantWrapper = styled.div`
         box-shadow: 8px 8px 10px rgb(0, 0 ,0 );
     };
     position: relative;
+    border: ${({isActive}) => (isActive ? '2px solid white' : 'none')};
+    transition: border 0.2s ease;
+
 `
 
 const StyledPlantName = styled.div`
@@ -443,15 +446,17 @@ const StyledTextarea = styled.textarea`
 
 const PlantDetailsContainer = styled.div`
     background: #1D201B;
-    min-height: 100vh
+    min-height: 100vh;
+    position: relative;
 `
 
 const MainContainer = styled.div`
     display: flex;
-    padding: 4rem;
+    padding: 4rem; 
     gap: 2rem;
     flex-grow: 1;
     height: 80vh;
+   
 `
 
 const PlantDataContainer = styled.div`
@@ -479,6 +484,35 @@ const StyledPlantNote = styled.div`
     margin: 0 0 3px 0;
     font-weight: normal 
 `
+const StyledRightChevron = styled.button`
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    border: none;
+    background: #1D201B;
+    color: white;
+`
+const StyledLeftChevron = styled.button`
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    border: none;
+    background: #1D201B;
+    color: white;
+`
+
+const WhiteBorder = styled.div`
+    border: ${({hasBorder}) => (hasBorder ? '2px solid white' : 'none')};
+    padding: 0;
+    border-radius: 30px;
+`
+
+const AnimatedContent = styled.div`
+        opacity: ${(props) => (props.isVisible ? 1 : 0)};
+        display: flex;
+        transition: opacity 0.2s ease;
+`
+
 
 export {
     FullLandingScreen,
@@ -530,5 +564,9 @@ export {
     StyledPlantData2,
     StyledPlantData3,
     StyledPlantNote,
-    PlantDataContainer
+    PlantDataContainer,
+    StyledLeftChevron,
+    StyledRightChevron,
+    WhiteBorder,
+    AnimatedContent
 }
