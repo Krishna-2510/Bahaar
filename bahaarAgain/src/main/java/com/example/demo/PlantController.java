@@ -23,7 +23,7 @@ public class PlantController {
     @GetMapping("/{gardenId}/plants")
     public ResponseEntity<List<Plant>> getPlantsByGardenId(@PathVariable String gardenId){
         List<Plant> plants = plantService.findPlantsByGardenId(gardenId);
-        System.out.println("THIS IS THE LIST = " + plants);
+//        System.out.println("THIS IS THE LIST = " + plants);
         return new ResponseEntity<>(plants, HttpStatus.OK);
     }
 
@@ -44,6 +44,22 @@ public class PlantController {
         String response = plantService.deletePlant(plantId, gardenId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/{gardenId}/recentPlants")
+    public ResponseEntity<List<Plant>> getMostRecentPlantsByGardenId(@PathVariable String gardenId){
+        List<Plant> plants = plantService.findMostRecentPlantByGardenId(gardenId);
+        System.out.println("THIS IS THE LIST = " + plants);
+        return new ResponseEntity<>(plants, HttpStatus.OK);
+    }
+
+    @GetMapping("/{plantName}/{gardenId}")
+    public ResponseEntity<List<Plant>> getPlantsByNameAndGardenId(@PathVariable String plantName, @PathVariable String gardenId){
+        List<Plant> plants = plantService.findByNameAndGardenId(plantName, gardenId);
+        System.out.println("THIS IS THE LIST = " + plants);
+        return new ResponseEntity<>(plants, HttpStatus.OK);
+    }
+
+
 
 
 }

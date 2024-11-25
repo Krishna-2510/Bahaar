@@ -1,41 +1,93 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { MyButton } from "../components/MyButton";
+import SaveIcon from '@mui/icons-material/Save';
 import AddIcon from '@mui/icons-material/Add';
 import { calculateAge } from "../utils/util";
-import { fertilizerMapping, sunlightMapping, waterMapping } from "../utils/constantData";
-import { AnimatedContent, MainContainer, PlantContainer, PlantDataContainer, PlantDetailsContainer, StyledLeftChevron, StyledPlantData1, StyledPlantData2, StyledPlantData3, StyledPlantNote, StyledRightChevron, WhiteBorder } from "../style/style";
+import { fertilizerMapping, fertilizerOptions, sunlightMapping, sunlightOptions, waterMapping, waterOptions } from "../utils/constantData";
+import { AnimatedContent, GardenEmptyImgContainer, MainContainer, PlantContainer, PlantDataContainer, PlantDetailsContainer, StyledLeftChevron, StyledPlantData1, StyledPlantData2, StyledPlantData3, StyledPlantNote, StyledRightChevron, StyledSelect, StyledTextareaPlant } from "../style/style";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { PlantCard } from "../components/PlantCard";
-import styled from 'styled-components';
 import { PlantHistoryCard } from "../components/PlantHistoryCard";
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import axios from "axios";
+
 
 
 export const PlantDetails = () => {
     const location = useLocation();
     const plant = location.state.plant ?? {};
     const image = location.state.image;
-    // console.log("Plant = ", location.state);
-
-    const temp = [plant, plant, plant, plant, plant];
-    const [isVisible, setIsVisible] = useState(true);
-    const plantHistory = temp.map((plant, ind) => {
-        return {
-            ...plant,
-            name: `${plant.name} - ${ind}`
-        }
-    });
-
-    const [currPlant, setCurrPlant] = useState(plantHistory[0]);
+    const [imagesrc, setImagesrc] = useState('');
+    const [imageName, setImageName] = useState('');
+    const [currImage, setCurrImage] = useState('');
     const [currInd, setCurrInd] = useState(0);
+    const [addingNewPlant, setAddingNewPlant] = useState(false);
+    const hiddenFileInput = useRef(null);
+    const [isVisible, setIsVisible] = useState(true);
+    const [allPlants, setAllPlants] = useState([]);
+    const [currPlant, setCurrPlant] = useState(allPlants?.[0]);
+    const [refreshPlants, setRefreshPlants] = useState(false);
+    
+    console.log("Plant = ", location.state.plant);
+
+    useEffect(() => {
+
+        getAllPlants();
+        window.scrollTo(0,0);
+    },[]);
+
+    useEffect(() => {
+        if(refreshPlants){
+        getAllPlants();
+        setRefreshPlants(false);
+    }
+        
+    },[refreshPlants])
+
+    useEffect(() => {
+        if (currPlant) {
+            fetchImage();
+        }
+    }, [currPlant]);
+
+    const fetchImage = async () => {
+        try {
+            const response = await axios.get(currPlant.imageUrl);
+            const base64Image = `data:image/jpeg;base64,${response.data.data}`;
+            setCurrImage(base64Image);
+        }
+        catch (e) {
+            console.log(e);
+        }
+    };
+
+    const getAllPlants = async() => {
+        try {
+            const response = await axios.get(`http://localhost:8080/${plant.name}/${plant.gardenId}`);
+            setAllPlants(response.data);
+            setCurrPlant(response.data[0]);
+            // if (!isEdit)
+            //     setAddingNewPlant(false);
+
+        }
+        catch (error) {
+            console.error('Error fetching response ', error);
+        }
+    }
 
     const loadNext = (dir) => {
-        const nextInd = (currInd + dir + plantHistory.length) % (plantHistory.length);
+        const nextInd = (currInd + dir + allPlants.length) % (allPlants.length);
+        console.log('This is the next ibdex:', nextInd)
         setIsVisible(false);
         setCurrInd(nextInd);
-        setCurrPlant(plantHistory[nextInd]);
+        setCurrPlant(allPlants[nextInd]);
+        const timer = setTimeout(() => {
+            setIsVisible(true);
+        }, 100);
+
+        return () => clearTimeout(timer);
     }
 
     useEffect(() => {
@@ -47,9 +99,81 @@ export const PlantDetails = () => {
     }, [currInd]);
 
     const handleOnClick = (ind) => {
+        console.log("Index here is equals to = ", ind, ' and allplants  = ', allPlants);
         setIsVisible(false);
         setCurrInd(ind);
-        setCurrPlant(plantHistory[ind]);
+        console.log("CURR = ",allPlants[ind]);
+        setCurrPlant(allPlants[ind]);
+    }
+
+    const [plantInput, setPlantInput] = useState({
+        plantName: plant.name,
+        water: 'Select an option',
+        sunlight: 'Select an option',
+        fertilizer: 'Select an option',
+        note: '',
+        imageFile: ''
+    });
+
+
+    const handleClick = () => {
+        hiddenFileInput.current.click();
+    };
+
+    const handleChange = event => {
+        const fileUploaded = event.target.files[0];
+        if (fileUploaded) {
+            setImageName(fileUploaded.name.substr(0, 6) + '...');
+            setPlantInput(prevState => ({ ...prevState, imageFile: fileUploaded }));
+        }
+    };
+
+    useEffect(() => {
+        console.log('ALL PLANTS CHANGED = ', allPlants)
+    },[allPlants])
+
+    const handleSave = async () => {
+
+        console.log("PLANT INPUT + ", plantInput)
+
+        // console.log("THIS IS THE DATA = ", plantInput, 'And this is the gerden id ', gardenId)
+        try {
+            const formData = new FormData();
+            formData.append("image", plantInput.imageFile);
+            formData.append("water", plantInput.water);
+            formData.append("sunlight", plantInput.sunlight);
+            formData.append("fertilizer", plantInput.fertilizer);
+            formData.append("name", plantInput.plantName);
+            formData.append("note", plantInput.note);
+            formData.append("gardenId", plant.gardenId);
+
+            const response = await axios.post('http://localhost:8080/addPlant', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            const newPlant = response.data; // Adjust based on your API response
+
+        // Update allPlants state directly
+        setAllPlants(prevPlants => [newPlant, ...prevPlants]);
+        setCurrPlant(newPlant); // Optionally set current plant to the new one
+        setAddingNewPlant(false);
+        setRefreshPlants(true);
+            
+            // plantAdded(false);
+            // setTimeout(() => {
+            //     setNotification({
+            //         show: true,
+            //         variant: 'success',
+            //         message: 'new plant added'
+            //     });
+            //     window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+            // }, '500');
+        }
+        catch (e) {
+            console.log(e);
+        }
     }
 
     return (
@@ -58,31 +182,78 @@ export const PlantDetails = () => {
                 <Navbar />
                 <MainContainer>
                     <AnimatedContent isVisible={isVisible}>
+                        {!addingNewPlant ? 
                         <PlantDataContainer>
-                            <StyledPlantData1>{currPlant.name}</StyledPlantData1>
-                            <StyledPlantData2>Age: <StyledPlantData3>{calculateAge(currPlant.addedOn)}</StyledPlantData3></StyledPlantData2>
-                            <StyledPlantData2>Water: <StyledPlantData3>{waterMapping[currPlant.water]}</StyledPlantData3></StyledPlantData2>
-                            <StyledPlantData2>Sunlight: <StyledPlantData3>{sunlightMapping[currPlant.sunlight]}</StyledPlantData3></StyledPlantData2>
-                            <StyledPlantData2>Fertilizer: <StyledPlantData3>{fertilizerMapping[currPlant.fertilizer]}</StyledPlantData3></StyledPlantData2>
-                            <StyledPlantNote>{currPlant.note}</StyledPlantNote>
+                            <StyledPlantData1>{currPlant?.name}</StyledPlantData1>
+                            <StyledPlantData2>Age: <StyledPlantData3>{calculateAge(currPlant?.addedOn)}</StyledPlantData3></StyledPlantData2>
+                            <StyledPlantData2>Water: <StyledPlantData3>{waterMapping[currPlant?.water]}</StyledPlantData3></StyledPlantData2>
+                            <StyledPlantData2>Sunlight: <StyledPlantData3>{sunlightMapping[currPlant?.sunlight]}</StyledPlantData3></StyledPlantData2>
+                            <StyledPlantData2>Fertilizer: <StyledPlantData3>{fertilizerMapping[currPlant?.fertilizer]}</StyledPlantData3></StyledPlantData2>
+                            <StyledPlantNote>{currPlant?.note}</StyledPlantNote>
                             <p style={{ position: 'absolute', bottom: '0' }}>
-                                <MyButton text={'Add new'} Icon={<AddIcon fontSize="medium" />} width={'150px'} action={() => { }} />
+                                <MyButton text={'Add new'} Icon={<AddIcon fontSize="medium" />} width={'150px'} action={() => {setAddingNewPlant(true)}} />
                             </p>
-
                         </PlantDataContainer>
-                        <img style={{ width: '50%', height: '100%', objectFit: 'cover', borderRadius: '30px' }} src={image} alt="Money Plant" />
+                        :
+                        <PlantDataContainer>
+                            <StyledPlantData1>{currPlant?.name}</StyledPlantData1>
+                            <StyledPlantData2>Water:
+                            <StyledSelect value={plantInput.water} onChange={(e) => setPlantInput({ ...plantInput, water: e.target.value })} selected={plantInput.water}>
+                                <option value="Select an option" disabled>Select an option</option>
+                                {waterOptions.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </StyledSelect>
+                            </StyledPlantData2>
+                            <StyledPlantData2>Sunlight: 
+                                <StyledSelect value={plantInput.sunlight} onChange={(e) => setPlantInput({ ...plantInput, sunlight: e.target.value })} selected={plantInput.sunlight}>
+                                <option value="Select an option" disabled>Select an option</option>
+                                {sunlightOptions.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </StyledSelect>
+                            </StyledPlantData2>
+                            <StyledPlantData2>Fertilizer: 
+                            <StyledSelect value={plantInput.fertilizer} onChange={(e) => setPlantInput({ ...plantInput, fertilizer: e.target.value })} selected={plantInput.fertilizer}>
+                                <option value="Select an option" disabled>Select an option</option>
+                                {fertilizerOptions.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </StyledSelect>
+                            </StyledPlantData2>
+                            <StyledTextareaPlant placeholder="Write a note" maxLength={246} value={plantInput.note} onChange={(e) => setPlantInput({...plantInput, note: e.target.value})}/>
+                            
+                            <p style={{ position: 'absolute', bottom: '0' }}>
+                                <MyButton text={'Save'} Icon={<SaveIcon fontSize="medium" />} width={'120px'} action={() => handleSave()} />
+                            </p>
+                        </PlantDataContainer>}
+                        {!addingNewPlant ? <img style={{ width: '50%', height: '100%', objectFit: 'cover', borderRadius: '30px' }} src={currImage} alt="Money Plant" />
+                        :
+                        <GardenEmptyImgContainer width='50%'>
+                            <MyButton text={imageName ? imageName : 'Add image'} Icon={<InsertPhotoIcon fontSize="medium" />} width={'150px'} action={handleClick}></MyButton>
+                            <input type="file" onChange={handleChange} ref={hiddenFileInput} style={{ display: 'none' }} />
+                        </GardenEmptyImgContainer>
+                       }
                     </AnimatedContent>
                 </MainContainer>
-                <StyledLeftChevron onClick={() => loadNext(-1)}>
+                {!addingNewPlant && <><StyledLeftChevron onClick={() => loadNext(-1)}>
                     <ArrowBackIosIcon fontSize="large" />
                 </StyledLeftChevron>
                 <StyledRightChevron onClick={() => loadNext(1)}>
                     <ArrowForwardIosIcon fontSize="large" />
-                </StyledRightChevron>
+                </StyledRightChevron></>}
             </PlantDetailsContainer>
             <PlantContainer>
-                {plantHistory.map((plant, ind) => <PlantHistoryCard onClick={() => handleOnClick(ind)} isActive={ind === currInd} plant={plant} />)}
+                {!refreshPlants && allPlants.map((plant, ind) => <PlantHistoryCard key={ind} onClick={() => handleOnClick(ind)} isActive={ind === currInd} setImage = {setImagesrc} plant={plant} />)}
             </PlantContainer>
         </>
     );
 };
+
+

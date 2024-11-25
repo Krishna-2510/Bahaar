@@ -136,7 +136,7 @@ export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refresh
                         <MyButton text={'Save'} Icon={<SaveIcon fontSize="medium" />} width={'120px'} action={handleSave} />
                         <StyledDelete><DeleteIcon htmlColor="white" onClick={() => gardenAdded(false)}/></StyledDelete>
                     </GardenDataContainer>
-                    <GardenEmptyImgContainer>
+                    <GardenEmptyImgContainer width='40%'>
                         <MyButton text={imageName ? imageName : 'Add image'} Icon={<InsertPhotoIcon fontSize="medium" />} width={'150px'} action={handleClick}></MyButton>
                         <input type="file" onChange={handleChange} ref={hiddenFileInput} style={{ display: 'none' }} />
                     </GardenEmptyImgContainer>

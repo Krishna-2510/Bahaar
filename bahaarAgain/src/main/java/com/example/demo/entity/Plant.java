@@ -1,7 +1,9 @@
 package com.example.demo.entity;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -18,6 +20,9 @@ public class Plant {
     private String fertilizer;
 	private String note;
 	private String imageUrl;
+
+	@CreatedDate
+	private Date createdAt;
 
 	public Plant(String gardenId, String name, String water, String sunlight, String fertilizer, String note, String imageUrl, String addedOn) {
 		this.gardenId = gardenId;
@@ -83,6 +88,13 @@ public class Plant {
 	}
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
 	}
     
     

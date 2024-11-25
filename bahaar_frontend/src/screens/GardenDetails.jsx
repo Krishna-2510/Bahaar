@@ -55,7 +55,7 @@ export const GardenDetails = () => {
     const getPlants = async () => {
         console.log('API called')
         try {
-            const response = await axios.get(`http://localhost:8080/${garden.id}/plants`);
+            const response = await axios.get(`http://localhost:8080/${garden.id}/recentPlants`);
             setPlants(response.data);
             if (!isEdit)
                 setAddingNewPlant(false);

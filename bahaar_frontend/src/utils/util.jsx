@@ -4,6 +4,9 @@ export const getTodaysDate = () => {
 }
 
 export const calculateAge = (birthDateStr) => {
+    //console.log("BITHDATESTR = ", birthDateStr)
+    if(birthDateStr === undefined)
+        return;
     // Parse the input date string
     const [day, month, year] = birthDateStr.split('-').map(Number);
     const birthDate = new Date(year, month - 1, day); // month is 0-indexed in JS

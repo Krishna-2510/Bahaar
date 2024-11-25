@@ -250,7 +250,7 @@ const GardenImgContainer = styled.div`
 `
 
 const GardenEmptyImgContainer = styled.div`
-    width:  40%;
+    width:  ${({width}) => (width)};
     border-radius: 30px;
     background: #535353;
     display: flex;
@@ -412,6 +412,7 @@ const StyledSelect = styled.select`
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 24px; 
+    border-radius: 30px;
 `
 
 const StyledPlantInfoInput = styled.div`
@@ -456,7 +457,6 @@ const MainContainer = styled.div`
     gap: 2rem;
     flex-grow: 1;
     height: 80vh;
-   
 `
 
 const PlantDataContainer = styled.div`
@@ -474,9 +474,12 @@ const StyledPlantData2 = styled.div`
     color: white;
     font-size: 2rem;
     margin: 0 0 3px 0;
+    display: flex;
+    align-items: center;
 `
 const StyledPlantData3 = styled.span`
     color: #749F2A;
+    margin: 0 10px;
 `
 const StyledPlantNote = styled.div`
     color: white;
@@ -511,6 +514,20 @@ const AnimatedContent = styled.div`
         opacity: ${(props) => (props.isVisible ? 1 : 0)};
         display: flex;
         transition: opacity 0.2s ease;
+        width: 100%;
+`
+
+const StyledTextareaPlant = styled.textarea`
+    background: #535353;
+    color: white;
+    font-size: 1.4rem;
+    min-height:12rem;
+    width: 90%;
+    border-radius: 15px;
+    padding: 10px;
+    resize: none;
+    font-family: Jaldi;
+    margin: 0.5rem 0;
 `
 
 
@@ -568,5 +585,6 @@ export {
     StyledLeftChevron,
     StyledRightChevron,
     WhiteBorder,
-    AnimatedContent
+    AnimatedContent,
+    StyledTextareaPlant
 }
