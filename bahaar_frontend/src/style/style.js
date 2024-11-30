@@ -295,21 +295,36 @@ const StyledDelete = styled.div`
 `
 // ------------------------------------------------------------------------------------------------------------
 
+// const StyledNotification = styled.div`
+//     width: 50%;
+//     height: 30px;
+//     background-color: ${({bgcolor}) => bgcolor};
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+//     padding: 10px 20px;
+//     border-radius: 32px;
+//     border: 1px solid;
+//     border-color: ${({outline}) => outline};
+//     margin: 30px auto;
+//     box-shadow: 4px 4px 8px rgb(0, 0 ,0 ,80%);
+
+// `
 const StyledNotification = styled.div`
-    width: 50%;
+    grid-column: 1 / -1; /* Span all columns */
+    width: 50%; /* Full width of the grid */
+    margin: 30px auto;
     height: 30px;
-    background-color: ${({bgcolor}) => bgcolor};
+    background-color: ${({ bgcolor }) => bgcolor};
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
     border-radius: 32px;
     border: 1px solid;
-    border-color: ${({outline}) => outline};
-    margin: 30px auto;
-    box-shadow: 4px 4px 8px rgb(0, 0 ,0 ,80%);
-
-`
+    border-color: ${({ outline }) => outline};
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+`;
 
 const StyledNotifMessage = styled.div`
     color: white;
@@ -329,32 +344,56 @@ const NotifHeading = styled.span`
 `
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
+// const PlantContainer = styled.div`
+//     padding: 70px 120px;
+//     min-height: 60%;
+//     background: #1D201B;
+//     display: flex;
+//     flex-wrap: wrap;
+//     gap: 35px;
+//     align-items: flex-start;
+// `
+// const PlantWrapper = styled.div`
+//     min-height: 24rem; 
+//     // margin: 10px;
+//     box-shadow: ${({isActive}) => isActive ? 'none' : '4px 4px 8px rgb(0, 0 ,0 ,80%)'};
+//     background-color: #161815;
+//     border-radius: 30px;
+//     flex: 1 1 30%; /* Adjust percentage to control number of items per row */
+//     max-width: 22rem;
+//     cursor: pointer;
+//     &:hover {
+//         box-shadow: 8px 8px 10px rgb(0, 0 ,0 );
+//     };
+//     position: relative;
+//     border: ${({isActive}) => (isActive ? '2px solid white' : 'none')};
+//     transition: border 0.2s ease;
+
+// `
+
 const PlantContainer = styled.div`
     padding: 70px 120px;
     min-height: 60%;
     background: #1D201B;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 35px;
-    align-items: flex-start;
-`
+    display: grid; /* Change to grid */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
+    gap: 35px; /* Space between grid items */
+    align-items: flex-start; /* Align items to the start */
+`;
+
 const PlantWrapper = styled.div`
     min-height: 24rem; 
-    // margin: 10px;
-    box-shadow: ${({isActive}) => isActive ? 'none' : '4px 4px 8px rgb(0, 0 ,0 ,80%)'};
+    box-shadow: ${({ isActive }) => (isActive ? 'none' : '4px 4px 8px rgba(0, 0, 0, 0.8)')};
     background-color: #161815;
     border-radius: 30px;
-    flex: 1 1 30%; /* Adjust percentage to control number of items per row */
-    max-width: 22rem;
     cursor: pointer;
     &:hover {
-        box-shadow: 8px 8px 10px rgb(0, 0 ,0 );
-    };
+        box-shadow: 8px 8px 10px rgba(0, 0, 0, 1);
+    }
     position: relative;
-    border: ${({isActive}) => (isActive ? '2px solid white' : 'none')};
+    border: ${({ isActive }) => (isActive ? '2px solid white' : 'none')};
     transition: border 0.2s ease;
-
-`
+`;
 
 const StyledPlantName = styled.div`
     color: white;

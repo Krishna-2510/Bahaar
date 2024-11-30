@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { MyButton } from "../components/MyButton";
 import SaveIcon from '@mui/icons-material/Save';
@@ -12,6 +12,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { PlantHistoryCard } from "../components/PlantHistoryCard";
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import axios from "axios";
+import { NotificationBox } from "../components/NotificationBox";
 
 
 
@@ -29,6 +30,12 @@ export const PlantDetails = () => {
     const [allPlants, setAllPlants] = useState([]);
     const [currPlant, setCurrPlant] = useState(allPlants?.[0]);
     const [refreshPlants, setRefreshPlants] = useState(false);
+    const [notificationDetails, setNotificationDetails] = useState({
+        show: false,
+        variant: null,
+        message: ''
+    });
+    const navigate = useNavigate();
     
     console.log("Plant = ", location.state.plant);
 
@@ -40,6 +47,7 @@ export const PlantDetails = () => {
 
     useEffect(() => {
         if(refreshPlants){
+            console.log("Set refresh palnts has been set to true calling getPlants")
         getAllPlants();
         setRefreshPlants(false);
     }
@@ -64,12 +72,11 @@ export const PlantDetails = () => {
     };
 
     const getAllPlants = async() => {
+        console.log("Inside getALl PLants")
         try {
             const response = await axios.get(`http://localhost:8080/${plant.name}/${plant.gardenId}`);
             setAllPlants(response.data);
             setCurrPlant(response.data[0]);
-            // if (!isEdit)
-            //     setAddingNewPlant(false);
 
         }
         catch (error) {
@@ -128,9 +135,11 @@ export const PlantDetails = () => {
         }
     };
 
-    useEffect(() => {
-        console.log('ALL PLANTS CHANGED = ', allPlants)
-    },[allPlants])
+    // useEffect(() => {
+    //     console.log('ALL PLANTS CHANGED = ', allPlants)
+    //     if(refreshPlants && allPlants.length === 0)
+    //         navigate('/bahaar/garden')
+    // },[allPlants])
 
     const handleSave = async () => {
 
@@ -156,8 +165,8 @@ export const PlantDetails = () => {
             const newPlant = response.data; // Adjust based on your API response
 
         // Update allPlants state directly
-        setAllPlants(prevPlants => [newPlant, ...prevPlants]);
-        setCurrPlant(newPlant); // Optionally set current plant to the new one
+        //setAllPlants(prevPlants => [newPlant, ...prevPlants]);
+        //setCurrPlant(newPlant); // Optionally set current plant to the new one
         setAddingNewPlant(false);
         setRefreshPlants(true);
             
@@ -174,6 +183,13 @@ export const PlantDetails = () => {
         catch (e) {
             console.log(e);
         }
+    }
+
+    const closed = () => {
+        setNotificationDetails({
+            ...notificationDetails,
+            show: false
+        });
     }
 
     return (
@@ -250,7 +266,13 @@ export const PlantDetails = () => {
                 </StyledRightChevron></>}
             </PlantDetailsContainer>
             <PlantContainer>
-                {!refreshPlants && allPlants.map((plant, ind) => <PlantHistoryCard key={ind} onClick={() => handleOnClick(ind)} isActive={ind === currInd} setImage = {setImagesrc} plant={plant} />)}
+                {!refreshPlants && allPlants.map((plant, ind) => <PlantHistoryCard key={plant.id} onClick={() => handleOnClick(ind)} isActive={ind === currInd} setImage = {setImagesrc} plant={plant} refreshPlants={setRefreshPlants} setNotification={setNotificationDetails} />)}
+                {notificationDetails.show &&
+                        <NotificationBox
+                            variant={notificationDetails?.variant}
+                            message={notificationDetails?.message}
+                            closed={closed} />
+                    }
             </PlantContainer>
         </>
     );
