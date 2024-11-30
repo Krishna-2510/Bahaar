@@ -59,6 +59,12 @@ public class PlantController {
         return new ResponseEntity<>(plants, HttpStatus.OK);
     }
 
+    @DeleteMapping("/deleteAllPlant/{plantName}/{gardenId}")
+    public ResponseEntity<List<String>> deleteAllPlant(@PathVariable String plantName, @PathVariable String gardenId){
+        List<String> response = plantService.deleteAllPlantByName(plantName, gardenId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
 
 

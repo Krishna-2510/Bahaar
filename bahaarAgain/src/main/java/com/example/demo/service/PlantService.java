@@ -11,4 +11,5 @@ public interface PlantService {
     public String deletePlant(String plantId, String gardenId);
     public List<Plant> findMostRecentPlantByGardenId(String gardenId);
     public List<Plant> findByNameAndGardenId(String name, String gardenId);
+    public List<String> deleteAllPlantByName(String name, String gardenId);
 }

@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class Plant {
 	private String imageUrl;
 
 	@CreatedDate
-	private Date createdAt;
+	private Instant createdAt;
 
 	public Plant(String gardenId, String name, String water, String sunlight, String fertilizer, String note, String imageUrl, String addedOn) {
 		this.gardenId = gardenId;
@@ -89,13 +90,20 @@ public class Plant {
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(Instant createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Date getCreatedAt() {
+	public Instant getCreatedAt() {
 		return createdAt;
 	}
-    
-    
+
+	@Override
+	public String toString() {
+		return "Plant{" +
+				"id='" + id + '\'' +
+				", gardenId='" + gardenId + '\'' +
+				", name='" + name + '\'' +
+				'}';
+	}
 }

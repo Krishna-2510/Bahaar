@@ -103,7 +103,7 @@ export const PlantCard = ({ plant, gardenId, edit, plantAdded, refreshPlants, se
 
     const handleDelete = async () => {
         try{
-           const res = await axios.delete(`http://localhost:8080/deletePlant/${gardenId}/${plant.id}`);
+           const res = await axios.delete(`http://localhost:8080/deleteAllPlant/${plant.name}/${gardenId}`);
            console.log("After res = ", res);
            refreshPlants(true);
            setNotification({

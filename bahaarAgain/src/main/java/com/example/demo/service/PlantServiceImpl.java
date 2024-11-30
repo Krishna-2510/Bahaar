@@ -19,6 +19,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,7 +47,9 @@ public class PlantServiceImpl implements PlantService {
         Plant plant  = new Plant(gardenId, name, water, sunlight, fertilizer, note, imageUrl, formattedDate);
         plantRepo.save(plant);
         List<Plant> existingPlants = plantRepo.findByNameAndGardenId(name, gardenId, Sort.by(Sort.Direction.DESC, "createdAt"));
-        if(existingPlants.isEmpty()) {
+//        System.out.println("The list of plants you want is = " + existingPlants);
+        if(existingPlants.size() == 1) {
+            System.out.println("List is empty");
             Garden garden = gardenRepo.findById(gardenId).orElseThrow();
             garden.setNumberOfPlants(garden.getNumberOfPlants() + 1);
             gardenRepo.save(garden);
@@ -79,20 +82,38 @@ public class PlantServiceImpl implements PlantService {
 
     @Override
     public String deletePlant(String plantId, String gardenId) {
+        Optional<Plant> plant = plantRepo.findById(plantId);
+//        System.out.println("The Plant you are lookinh for is this = " + plant);
+        String name = plant.get().getName();
+        List<Plant> existingPlants = plantRepo.findByNameAndGardenId(name, gardenId, Sort.by(Sort.Direction.DESC, "createdAt"));
+        if(existingPlants.size() == 1) {
+            Garden garden = gardenRepo.findById(gardenId).orElseThrow();
+            garden.setNumberOfPlants(garden.getNumberOfPlants() - 1);
+            gardenRepo.save(garden);
+        }
         plantRepo.deleteById(plantId);
-        Garden garden = gardenRepo.findById(gardenId).orElseThrow();
-        garden.setNumberOfPlants(garden.getNumberOfPlants() - 1);
-        gardenRepo.save(garden);
         return plantId;
     }
 
     @Override
     public List<Plant> findMostRecentPlantByGardenId(String gardenId) {
+
         Aggregation aggregation = Aggregation.newAggregation(
+                // Step 1: Match by gardenId
                 Aggregation.match(Criteria.where("gardenId").is(gardenId)),
+
+                // Step 2: Sort by createdAt descending
                 Aggregation.sort(Sort.by(Sort.Direction.DESC, "createdAt")),
-                Aggregation.group("name").first("$$ROOT").as("latestPlant"),
-                Aggregation.replaceRoot("latestPlant")
+
+                // Step 3: Group by name and get the first document (most recent)
+                Aggregation.group("name")
+                        .first("$$ROOT").as("latestPlant"), // Get the entire document
+
+                // Step 4: Replace root with the latestPlant
+                Aggregation.replaceRoot("latestPlant"),
+
+                // Step 5: Optionally sort by createdAt again if you want a specific order
+                Aggregation.sort(Sort.by(Sort.Direction.DESC, "createdAt"))
         );
 
         AggregationResults<Plant> results = mongoTemplate.aggregate(aggregation, Plant.class, Plant.class);
@@ -103,5 +124,20 @@ public class PlantServiceImpl implements PlantService {
     public List<Plant> findByNameAndGardenId(String name, String gardenId) {
         Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
         return plantRepo.findByNameAndGardenId(name, gardenId, sort);
+    }
+
+    @Override
+    public List<String> deleteAllPlantByName(String name, String gardenId) {
+        List<Plant> allPlants = plantRepo.findByNameAndGardenId(name, gardenId, Sort.by(Sort.Direction.DESC, "createdAt"));
+        List<String> result = new ArrayList<String>();
+        for (Plant allPlant : allPlants) {
+            String plantId = allPlant.getId();
+            plantRepo.deleteById(plantId);
+            result.add(plantId);
+        }
+        Garden garden = gardenRepo.findById(gardenId).orElseThrow();
+        garden.setNumberOfPlants(garden.getNumberOfPlants() - 1);
+        gardenRepo.save(garden);
+        return result;
     }
 }

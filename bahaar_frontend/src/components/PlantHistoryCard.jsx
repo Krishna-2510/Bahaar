@@ -28,55 +28,21 @@ export const PlantHistoryCard = ({ plant, isActive, onClick, gardenId, edit, pla
             fetchImage();
     }, []);
 
-//     const handleSave = async () => {
-
-//         console.log("THIS IS THE DATA = ", plantInput, 'And this is the gerden id ', gardenId)
-//         try {
-//             const formData = new FormData();
-//             formData.append("image", plantInput.imageFile);
-//             formData.append("water", plantInput.water);
-//             formData.append("sunlight", plantInput.sunlight);
-//             formData.append("fertilizer", plantInput.fertilizer);
-//             formData.append("name", plantInput.plantName);
-//             formData.append("note", plantInput.note);
-//             formData.append("gardenId", gardenId);
-
-//             await axios.post('http://localhost:8080/addPlant', formData, {
-//                 headers: {
-//                     'Content-Type': 'multipart/form-data'
-//                 }
-//             });
-            
-//             plantAdded(false);
-//             setTimeout(() => {
-//                 setNotification({
-//                     show: true,
-//                     variant: 'success',
-//                     message: 'new plant added'
-//                 });
-//                 window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-//             }, '500');
-//         }
-//         catch (e) {
-//             console.log(e);
-//         }
-//     }
-
-//     const handleDelete = async () => {
-//         try{
-//            const res = await axios.delete(`http://localhost:8080/deletePlant/${gardenId}/${plant.id}`);
-//            console.log("After res = ", res);
-//            refreshPlants(true);
-//            setNotification({
-//                show: true,
-//                variant: 'success',
-//                message: 'plant deleted'
-//            });
-//         }
-//         catch(e){
-//            console.log(e);
-//         }
-//    }
+    const handleDelete = async () => {
+        try{
+           const res = await axios.delete(`http://localhost:8080/deletePlant/${gardenId}/${plant.id}`);
+           console.log("After res = ", res);
+           refreshPlants(true);
+           setNotification({
+               show: true,
+               variant: 'success',
+               message: 'plant deleted'
+           });
+        }
+        catch(e){
+           console.log(e);
+        }
+   }
 
 
 
@@ -92,8 +58,8 @@ export const PlantHistoryCard = ({ plant, isActive, onClick, gardenId, edit, pla
                 <StyledDelete>
                     <DeleteIcon htmlColor="white" onClick={(e) => {
                             e.stopPropagation()
-                            // if(window.confirm(`Are you sure you want to delete ${plant.name} ?`))
-                            // handleDelete();
+                            if(window.confirm(`Are you sure you want to delete ${plant.name} ?`))
+                            handleDelete();
                         }}/>
                 </StyledDelete>
             </PlantWrapper>
