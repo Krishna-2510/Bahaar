@@ -1,7 +1,10 @@
 package com.example.demo.entity;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -16,9 +19,22 @@ public class Plant {
     private String water;
     private String sunlight;
     private String fertilizer;
-    private String note;
-    private String imageUrl;
-    private List<Plant> history;
+	private String note;
+	private String imageUrl;
+
+	@CreatedDate
+	private Instant createdAt;
+
+	public Plant(String gardenId, String name, String water, String sunlight, String fertilizer, String note, String imageUrl, String addedOn) {
+		this.gardenId = gardenId;
+		this.name = name;
+		this.water = water;
+		this.sunlight = sunlight;
+		this.fertilizer = fertilizer;
+		this.note = note;
+		this.imageUrl = imageUrl;
+		this.addedOn = addedOn;
+	}
     
 	public String getId() {
 		return id;
@@ -68,18 +84,26 @@ public class Plant {
 	public void setNote(String note) {
 		this.note = note;
 	}
-	public List<Plant> getHistory() {
-		return history;
-	}
-	public void setHistory(List<Plant> history) {
-		this.history = history;
-	}
 	public String getImageUrl() {
 		return imageUrl;
 	}
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
-    
-    
+	public void setCreatedAt(Instant createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Instant getCreatedAt() {
+		return createdAt;
+	}
+
+	@Override
+	public String toString() {
+		return "Plant{" +
+				"id='" + id + '\'' +
+				", gardenId='" + gardenId + '\'' +
+				", name='" + name + '\'' +
+				'}';
+	}
 }

@@ -71,6 +71,9 @@ const StyledButton = styled.button`
     &:hover {
         box-shadow: 8px 8px 10px rgb(0, 0 ,0 );
     }
+    &:active {
+        background: #55761e;
+    }
 `
 
 const StyledButtonContent = styled.div`
@@ -180,7 +183,7 @@ const StyledHeader = styled.div`
 height:30%;
 width: 100%;
 position:relative;
-background-image: url(${roundLeavesImage});
+background-image:  url(${roundLeavesImage});
 background-size: cover;
 background-position: center;
 z-index: 0;
@@ -218,7 +221,7 @@ const StyledUserName = styled.span`
 
 const GardenContainer = styled.div`
     padding: 70px 10px;
-    min-height: 50%;
+    min-height: 60%;
     background: #1D201B;
 `
 const StyledGardenCard = styled.div`
@@ -250,7 +253,7 @@ const GardenImgContainer = styled.div`
 `
 
 const GardenEmptyImgContainer = styled.div`
-    width:  40%;
+    width:  ${({width}) => (width)};
     border-radius: 30px;
     background: #535353;
     display: flex;
@@ -295,21 +298,36 @@ const StyledDelete = styled.div`
 `
 // ------------------------------------------------------------------------------------------------------------
 
+// const StyledNotification = styled.div`
+//     width: 50%;
+//     height: 30px;
+//     background-color: ${({bgcolor}) => bgcolor};
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+//     padding: 10px 20px;
+//     border-radius: 32px;
+//     border: 1px solid;
+//     border-color: ${({outline}) => outline};
+//     margin: 30px auto;
+//     box-shadow: 4px 4px 8px rgb(0, 0 ,0 ,80%);
+
+// `
 const StyledNotification = styled.div`
-    width: 50%;
+    grid-column: 1 / -1; /* Span all columns */
+    width: 50%; /* Full width of the grid */
+    margin: 30px auto;
     height: 30px;
-    background-color: ${({bgcolor}) => bgcolor};
+    background-color: ${({ bgcolor }) => bgcolor};
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
     border-radius: 32px;
-    border: 2px solid;
-    border-color: ${({outline}) => outline};
-    margin: 30px auto;
-    box-shadow: 4px 4px 8px rgb(0, 0 ,0 ,80%);
-
-`
+    border: 1px solid;
+    border-color: ${({ outline }) => outline};
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+`;
 
 const StyledNotifMessage = styled.div`
     color: white;
@@ -327,6 +345,233 @@ const NotifHeading = styled.span`
     font-size:24px;
     margin: 0 5px;
 `
+//---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// const PlantContainer = styled.div`
+//     padding: 70px 120px;
+//     min-height: 60%;
+//     background: #1D201B;
+//     display: flex;
+//     flex-wrap: wrap;
+//     gap: 35px;
+//     align-items: flex-start;
+// `
+// const PlantWrapper = styled.div`
+//     min-height: 24rem; 
+//     // margin: 10px;
+//     box-shadow: ${({isActive}) => isActive ? 'none' : '4px 4px 8px rgb(0, 0 ,0 ,80%)'};
+//     background-color: #161815;
+//     border-radius: 30px;
+//     flex: 1 1 30%; /* Adjust percentage to control number of items per row */
+//     max-width: 22rem;
+//     cursor: pointer;
+//     &:hover {
+//         box-shadow: 8px 8px 10px rgb(0, 0 ,0 );
+//     };
+//     position: relative;
+//     border: ${({isActive}) => (isActive ? '2px solid white' : 'none')};
+//     transition: border 0.2s ease;
+
+// `
+
+const PlantContainer = styled.div`
+    padding: 70px 120px;
+    min-height: 60%;
+    background: #1D201B;
+    display: grid; /* Change to grid */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
+    gap: 35px; /* Space between grid items */
+    align-items: flex-start; /* Align items to the start */
+`;
+
+const PlantWrapper = styled.div`
+    min-height: 24rem; 
+    box-shadow: ${({ isActive }) => (isActive ? 'none' : '4px 4px 8px rgba(0, 0, 0, 0.8)')};
+    background-color: #161815;
+    border-radius: 30px;
+    cursor: pointer;
+    &:hover {
+        box-shadow: 8px 8px 10px rgba(0, 0, 0, 1);
+    }
+    position: relative;
+    border: ${({ isActive }) => (isActive ? '2px solid white' : 'none')};
+    transition: border 0.2s ease;
+`;
+
+const StyledPlantName = styled.div`
+    color: white;
+    margin: 1px;
+    padding-left: 1.5rem;
+    font-size: 2.2rem;
+    font-weight: bold;
+`
+
+const StyledPlantInfo = styled.div`
+    color: white;
+    margin: 1px;
+    font-size: 1.8rem;
+    padding-left: 1.5rem;
+    font-weight: 400;
+`
+
+const PlantImageContainer = styled.div`
+    height: 20rem;
+`
+const PlantInfoContainer = styled.div`
+    min-height: 1rem;
+`
+
+const PlantNameInput = styled.input`
+    width: 90%;
+    border: none;
+    font-size: 35px;
+    background: #161815;
+    margin: 10px 18px;
+    font-weight: bold;
+    color: white;
+    font-family: 'Jaldi';
+
+    &::placeholder {
+        color: #535353;
+    };
+
+    &:focus {
+        outline: none;
+    }
+        
+`
+
+const StyledSelect = styled.select`
+   margin: 10px;
+    width: 90%;
+    font-size: 1.4rem;
+    background: #161815;
+    color: ${({ selected }) => (selected === 'Select an option' ? '#535353' : 'white')};
+    border: none;
+    appearance: none; 
+    padding: 10px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="white" d="M4 6l4 4 4-4z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 24px; 
+    border-radius: 30px;
+`
+
+const StyledPlantInfoInput = styled.div`
+    display: flex;
+    align-items: center;
+`
+
+const StyledEmptyImageContainer = styled.div`
+    height: 20rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #535353; 
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+`
+
+const StyledTextarea = styled.textarea`
+    background: #535353;
+    margin: 0.5rem 1.5rem;
+    color: white;
+    font-size: 1.4rem;
+    min-height:15rem;
+    width: 80%;
+    border-radius: 15px;
+    padding: 10px;
+    resize: none;
+    font-family: Jaldi;
+`
+
+// ------============================================================================================================
+
+const PlantDetailsContainer = styled.div`
+    background: #1D201B;
+    min-height: 100vh;
+    position: relative;
+`
+
+const MainContainer = styled.div`
+    display: flex;
+    padding: 4rem; 
+    gap: 2rem;
+    flex-grow: 1;
+    height: 80vh;
+`
+
+const PlantDataContainer = styled.div`
+    width: 50%;
+    position: relative;
+    padding: 10px;
+`
+
+const StyledPlantData1 = styled.div`
+    color: white;
+    font-size: 3.5rem;
+    margin: 0 0 3px 0;
+`
+const StyledPlantData2 = styled.div`
+    color: white;
+    font-size: 2rem;
+    margin: 0 0 3px 0;
+    display: flex;
+    align-items: center;
+`
+const StyledPlantData3 = styled.span`
+    color: #749F2A;
+    margin: 0 10px;
+`
+const StyledPlantNote = styled.div`
+    color: white;
+    font-size: 1.6rem;
+    margin: 0 0 3px 0;
+    font-weight: normal 
+`
+const StyledRightChevron = styled.button`
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    border: none;
+    background: #1D201B;
+    color: white;
+`
+const StyledLeftChevron = styled.button`
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    border: none;
+    background: #1D201B;
+    color: white;
+`
+
+const WhiteBorder = styled.div`
+    border: ${({hasBorder}) => (hasBorder ? '2px solid white' : 'none')};
+    padding: 0;
+    border-radius: 30px;
+`
+
+const AnimatedContent = styled.div`
+        opacity: ${(props) => (props.isVisible ? 1 : 0)};
+        display: flex;
+        transition: opacity 0.2s ease;
+        width: 100%;
+`
+
+const StyledTextareaPlant = styled.textarea`
+    background: #535353;
+    color: white;
+    font-size: 1.4rem;
+    min-height:12rem;
+    width: 90%;
+    border-radius: 15px;
+    padding: 10px;
+    resize: none;
+    font-family: Jaldi;
+    margin: 0.5rem 0;
+`
+
 
 export {
     FullLandingScreen,
@@ -360,5 +605,28 @@ export {
     StyledNotifMessage,
     NotifDetails,
     NotifHeading,
-    StyledDelete
+    StyledDelete,
+    PlantContainer,
+    PlantWrapper,
+    StyledPlantInfo,
+    StyledPlantName,
+    PlantInfoContainer,
+    PlantImageContainer,
+    PlantNameInput,
+    StyledSelect,
+    StyledPlantInfoInput,
+    StyledEmptyImageContainer,
+    StyledTextarea,
+    PlantDetailsContainer,
+    MainContainer,
+    StyledPlantData1,
+    StyledPlantData2,
+    StyledPlantData3,
+    StyledPlantNote,
+    PlantDataContainer,
+    StyledLeftChevron,
+    StyledRightChevron,
+    WhiteBorder,
+    AnimatedContent,
+    StyledTextareaPlant
 }

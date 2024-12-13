@@ -7,8 +7,9 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { getTodaysDate } from "../utils/util";
+import { useNavigate } from "react-router-dom";
 
-export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refreshGardens}) => {
+export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refreshGardens, onClickHandler}) => {
 
     const [imagesrc, setImagesrc] = useState('');
     const [gardenInput, setGardenInput] = useState({ gardenName: '', imageFile: '' });
@@ -16,6 +17,7 @@ export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refresh
     const today = getTodaysDate();
     const hiddenFileInput = useRef(null);
     const [imageName, setImageName] = useState('');
+    const navigate = useNavigate();
 
     const fetchImage = async () => {
         try {
@@ -96,7 +98,7 @@ export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refresh
     }
 
     return (
-        <StyledGardenCard onClick={() => {console.log("on this garden = ", garden)}}>
+        <StyledGardenCard onClick={onClickHandler}>
             {!edit ?
                 <>
                     <GardenDataContainer>
@@ -105,10 +107,14 @@ export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refresh
                         <StyledGardenDetails color="#749F2A">{garden.createdOn}</StyledGardenDetails>
                         <br />
                         <StyledGardenDetails color="white">Total plants: </StyledGardenDetails>
-                        <StyledGardenDetails color="#749F2A">{garden.plants.length}</StyledGardenDetails>
+                        <StyledGardenDetails color="#749F2A">{garden.numberOfPlants}</StyledGardenDetails>
                         <br />
-                        <MyButton text={'Add plant'} Icon={<AddIcon fontSize="medium" />} width={'150px'} />
-                        <StyledDelete><DeleteIcon htmlColor="white" onClick={() => {
+                        <MyButton text={'Add plant'} Icon={<AddIcon fontSize="medium" />} width={'150px'} action = {(e) => {
+                            e.stopPropagation();
+                            navigate('/bahaar/garden', {state: {garden, edit: true}})
+                        }} />
+                        <StyledDelete><DeleteIcon htmlColor="white" onClick={(e) => {
+                            e.stopPropagation()
                             if(window.confirm(`Are you sure you want to delete ${garden.name} ?`))
                             handleDelete();
                         }}/></StyledDelete>
@@ -130,7 +136,7 @@ export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refresh
                         <MyButton text={'Save'} Icon={<SaveIcon fontSize="medium" />} width={'120px'} action={handleSave} />
                         <StyledDelete><DeleteIcon htmlColor="white" onClick={() => gardenAdded(false)}/></StyledDelete>
                     </GardenDataContainer>
-                    <GardenEmptyImgContainer>
+                    <GardenEmptyImgContainer width='40%'>
                         <MyButton text={imageName ? imageName : 'Add image'} Icon={<InsertPhotoIcon fontSize="medium" />} width={'150px'} action={handleClick}></MyButton>
                         <input type="file" onChange={handleChange} ref={hiddenFileInput} style={{ display: 'none' }} />
                     </GardenEmptyImgContainer>
