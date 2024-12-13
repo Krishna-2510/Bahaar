@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation,useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { MyButton } from "../components/MyButton";
 import SaveIcon from '@mui/icons-material/Save';
@@ -36,23 +36,23 @@ export const PlantDetails = () => {
         message: ''
     });
     const navigate = useNavigate();
-    
-    console.log("Plant = ", location.state.plant);
+
+    // console.log("Plant = ", location.state.plant);
 
     useEffect(() => {
 
         getAllPlants();
-        window.scrollTo(0,0);
-    },[]);
+        window.scrollTo(0, 0);
+    }, []);
 
     useEffect(() => {
-        if(refreshPlants){
+        if (refreshPlants) {
             console.log("Set refresh palnts has been set to true calling getPlants")
-        getAllPlants();
-        setRefreshPlants(false);
-    }
-        
-    },[refreshPlants])
+            getAllPlants();
+            setRefreshPlants(false);
+        }
+
+    }, [refreshPlants])
 
     useEffect(() => {
         if (currPlant) {
@@ -71,7 +71,7 @@ export const PlantDetails = () => {
         }
     };
 
-    const getAllPlants = async() => {
+    const getAllPlants = async () => {
         console.log("Inside getALl PLants")
         try {
             const response = await axios.get(`http://localhost:8080/${plant.name}/${plant.gardenId}`);
@@ -85,8 +85,9 @@ export const PlantDetails = () => {
     }
 
     const loadNext = (dir) => {
+        console.log("Inside this function with dir = ", dir, "currInd = ", currInd, " length = ", allPlants.length)
         const nextInd = (currInd + dir + allPlants.length) % (allPlants.length);
-        console.log('This is the next ibdex:', nextInd)
+        console.log('This is the next index:', nextInd)
         setIsVisible(false);
         setCurrInd(nextInd);
         setCurrPlant(allPlants[nextInd]);
@@ -109,7 +110,7 @@ export const PlantDetails = () => {
         console.log("Index here is equals to = ", ind, ' and allplants  = ', allPlants);
         setIsVisible(false);
         setCurrInd(ind);
-        console.log("CURR = ",allPlants[ind]);
+        console.log("CURR = ", allPlants[ind]);
         setCurrPlant(allPlants[ind]);
     }
 
@@ -164,12 +165,12 @@ export const PlantDetails = () => {
 
             const newPlant = response.data; // Adjust based on your API response
 
-        // Update allPlants state directly
-        //setAllPlants(prevPlants => [newPlant, ...prevPlants]);
-        //setCurrPlant(newPlant); // Optionally set current plant to the new one
-        setAddingNewPlant(false);
-        setRefreshPlants(true);
-            
+            // Update allPlants state directly
+            //setAllPlants(prevPlants => [newPlant, ...prevPlants]);
+            //setCurrPlant(newPlant); // Optionally set current plant to the new one
+            setAddingNewPlant(false);
+            setRefreshPlants(true);
+
             // plantAdded(false);
             // setTimeout(() => {
             //     setNotification({
@@ -192,87 +193,109 @@ export const PlantDetails = () => {
         });
     }
 
+    useEffect(() => {
+        const handleKeyPressEvent = (e) => {
+            switch(e.key){
+                case "ArrowRight":
+                    loadNext(1);
+                    break;
+                case "ArrowLeft":
+                    loadNext(-1);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        window.addEventListener("keydown", handleKeyPressEvent);
+        return () => {
+            window.removeEventListener("keydown", handleKeyPressEvent);
+        };
+    })
+
     return (
         <>
             <PlantDetailsContainer>
                 <Navbar />
                 <MainContainer>
                     <AnimatedContent isVisible={isVisible}>
-                        {!addingNewPlant ? 
-                        <PlantDataContainer>
-                            <StyledPlantData1>{currPlant?.name}</StyledPlantData1>
-                            <StyledPlantData2>Age: <StyledPlantData3>{calculateAge(currPlant?.addedOn)}</StyledPlantData3></StyledPlantData2>
-                            <StyledPlantData2>Water: <StyledPlantData3>{waterMapping[currPlant?.water]}</StyledPlantData3></StyledPlantData2>
-                            <StyledPlantData2>Sunlight: <StyledPlantData3>{sunlightMapping[currPlant?.sunlight]}</StyledPlantData3></StyledPlantData2>
-                            <StyledPlantData2>Fertilizer: <StyledPlantData3>{fertilizerMapping[currPlant?.fertilizer]}</StyledPlantData3></StyledPlantData2>
-                            <StyledPlantNote>{currPlant?.note}</StyledPlantNote>
-                            <p style={{ position: 'absolute', bottom: '0' }}>
-                                <MyButton text={'Add new'} Icon={<AddIcon fontSize="medium" />} width={'150px'} action={() => {setAddingNewPlant(true)}} />
-                            </p>
-                        </PlantDataContainer>
-                        :
-                        <PlantDataContainer>
-                            <StyledPlantData1>{currPlant?.name}</StyledPlantData1>
-                            <StyledPlantData2>Water:
-                            <StyledSelect value={plantInput.water} onChange={(e) => setPlantInput({ ...plantInput, water: e.target.value })} selected={plantInput.water}>
-                                <option value="Select an option" disabled>Select an option</option>
-                                {waterOptions.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </StyledSelect>
-                            </StyledPlantData2>
-                            <StyledPlantData2>Sunlight: 
-                                <StyledSelect value={plantInput.sunlight} onChange={(e) => setPlantInput({ ...plantInput, sunlight: e.target.value })} selected={plantInput.sunlight}>
-                                <option value="Select an option" disabled>Select an option</option>
-                                {sunlightOptions.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </StyledSelect>
-                            </StyledPlantData2>
-                            <StyledPlantData2>Fertilizer: 
-                            <StyledSelect value={plantInput.fertilizer} onChange={(e) => setPlantInput({ ...plantInput, fertilizer: e.target.value })} selected={plantInput.fertilizer}>
-                                <option value="Select an option" disabled>Select an option</option>
-                                {fertilizerOptions.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </StyledSelect>
-                            </StyledPlantData2>
-                            <StyledTextareaPlant placeholder="Write a note" maxLength={246} value={plantInput.note} onChange={(e) => setPlantInput({...plantInput, note: e.target.value})}/>
-                            
-                            <p style={{ position: 'absolute', bottom: '0' }}>
-                                <MyButton text={'Save'} Icon={<SaveIcon fontSize="medium" />} width={'120px'} action={() => handleSave()} />
-                            </p>
-                        </PlantDataContainer>}
+                        {!addingNewPlant ?
+                            <PlantDataContainer>
+                                <StyledPlantData1>{currPlant?.name}</StyledPlantData1>
+                                <StyledPlantData2>Age: <StyledPlantData3>{calculateAge(currPlant?.addedOn)}</StyledPlantData3></StyledPlantData2>
+                                <StyledPlantData2>Water: <StyledPlantData3>{waterMapping[currPlant?.water]}</StyledPlantData3></StyledPlantData2>
+                                <StyledPlantData2>Sunlight: <StyledPlantData3>{sunlightMapping[currPlant?.sunlight]}</StyledPlantData3></StyledPlantData2>
+                                <StyledPlantData2>Fertilizer: <StyledPlantData3>{fertilizerMapping[currPlant?.fertilizer]}</StyledPlantData3></StyledPlantData2>
+                                <StyledPlantNote>{currPlant?.note}</StyledPlantNote>
+                                <p style={{ position: 'absolute', bottom: '0' }}>
+                                    <MyButton text={'Add new'} Icon={<AddIcon fontSize="medium" />} width={'150px'} action={() => { setAddingNewPlant(true) }} />
+                                </p>
+                            </PlantDataContainer>
+                            :
+                            <PlantDataContainer>
+                                <StyledPlantData1>{currPlant?.name}</StyledPlantData1>
+                                <StyledPlantData2>Water:
+                                    <StyledSelect value={plantInput.water} onChange={(e) => setPlantInput({ ...plantInput, water: e.target.value })} selected={plantInput.water}>
+                                        <option value="Select an option" disabled>Select an option</option>
+                                        {waterOptions.map((option) => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </StyledSelect>
+                                </StyledPlantData2>
+                                <StyledPlantData2>Sunlight:
+                                    <StyledSelect value={plantInput.sunlight} onChange={(e) => setPlantInput({ ...plantInput, sunlight: e.target.value })} selected={plantInput.sunlight}>
+                                        <option value="Select an option" disabled>Select an option</option>
+                                        {sunlightOptions.map((option) => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </StyledSelect>
+                                </StyledPlantData2>
+                                <StyledPlantData2>Fertilizer:
+                                    <StyledSelect value={plantInput.fertilizer} onChange={(e) => setPlantInput({ ...plantInput, fertilizer: e.target.value })} selected={plantInput.fertilizer}>
+                                        <option value="Select an option" disabled>Select an option</option>
+                                        {fertilizerOptions.map((option) => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </StyledSelect>
+                                </StyledPlantData2>
+                                <StyledTextareaPlant placeholder="Write a note" maxLength={246} value={plantInput.note} onChange={(e) => setPlantInput({ ...plantInput, note: e.target.value })} />
+
+                                <p style={{ position: 'absolute', bottom: '0' }}>
+                                    <MyButton text={'Save'} Icon={<SaveIcon fontSize="medium" />} width={'120px'} action={() => handleSave()} />
+                                </p>
+                            </PlantDataContainer>}
                         {!addingNewPlant ? <img style={{ width: '50%', height: '100%', objectFit: 'cover', borderRadius: '30px' }} src={currImage} alt="Money Plant" />
-                        :
-                        <GardenEmptyImgContainer width='50%'>
-                            <MyButton text={imageName ? imageName : 'Add image'} Icon={<InsertPhotoIcon fontSize="medium" />} width={'150px'} action={handleClick}></MyButton>
-                            <input type="file" onChange={handleChange} ref={hiddenFileInput} style={{ display: 'none' }} />
-                        </GardenEmptyImgContainer>
-                       }
+                            :
+                            <GardenEmptyImgContainer width='50%'>
+                                <MyButton text={imageName ? imageName : 'Add image'} Icon={<InsertPhotoIcon fontSize="medium" />} width={'150px'} action={handleClick}></MyButton>
+                                <input type="file" onChange={handleChange} ref={hiddenFileInput} style={{ display: 'none' }} />
+                            </GardenEmptyImgContainer>
+                        }
                     </AnimatedContent>
                 </MainContainer>
-                {!addingNewPlant && <><StyledLeftChevron onClick={() => loadNext(-1)}>
-                    <ArrowBackIosIcon fontSize="large" />
-                </StyledLeftChevron>
-                <StyledRightChevron onClick={() => loadNext(1)}>
-                    <ArrowForwardIosIcon fontSize="large" />
-                </StyledRightChevron></>}
+                {!addingNewPlant && <>
+                    <StyledLeftChevron onClick={() => loadNext(-1)}>
+                        <ArrowBackIosIcon fontSize="large" />
+                    </StyledLeftChevron>
+                    <StyledRightChevron onClick={() => loadNext(1)}>
+                        <ArrowForwardIosIcon fontSize="large" />
+                    </StyledRightChevron>
+                </>}
             </PlantDetailsContainer>
             <PlantContainer>
-                {!refreshPlants && allPlants.map((plant, ind) => <PlantHistoryCard key={plant.id} onClick={() => handleOnClick(ind)} isActive={ind === currInd} setImage = {setImagesrc} plant={plant} refreshPlants={setRefreshPlants} setNotification={setNotificationDetails} />)}
+                {!refreshPlants && allPlants.map((plant, ind) => <PlantHistoryCard key={plant.id} onClick={() => handleOnClick(ind)} isActive={ind === currInd} setImage={setImagesrc} plant={plant} refreshPlants={setRefreshPlants} setNotification={setNotificationDetails} />)}
                 {notificationDetails.show &&
-                        <NotificationBox
-                            variant={notificationDetails?.variant}
-                            message={notificationDetails?.message}
-                            closed={closed} />
-                    }
+                    <NotificationBox
+                        variant={notificationDetails?.variant}
+                        message={notificationDetails?.message}
+                        closed={closed} />
+                }
             </PlantContainer>
         </>
     );
