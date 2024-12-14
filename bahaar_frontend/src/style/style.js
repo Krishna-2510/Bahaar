@@ -3,6 +3,12 @@ import monsteraImage from "../images/monsteraBg.jpg";
 import smallLeavesImage from "../images/smallLeavesBg.jpg";
 import roundLeavesImage from "../images/roundLeavesBg.jpg"
 
+const breakpoints = {
+    mobile: '480px',
+    tablet: '768px',
+    desktop: '1024px',
+  };
+
 const FullLandingScreen = styled.div`
     height:100%;
     width: 100%;
@@ -38,13 +44,31 @@ const StyledMainHeading = styled.h1`
     color:#749F2A;
     text-align: center;
     text-shadow: inset 3px 5px rgba(0, 0, 0);
-    margin:0
+    margin:0;
+
+    @media (max-width: ${breakpoints.tablet}) {
+    font-size: 7rem;
+    }
+
+    @media (max-width: ${breakpoints.mobile}) {
+        font-size: 5rem;
+    }
 `
 
 const StyledTagline = styled.div`
     font-size: 30px;
     color: white;
-    text-align: center
+    text-align: center;
+
+    @media (max-width: ${breakpoints.tablet}) {
+        font-size: 22px;
+        margin: 20px;
+    }
+
+    @media (max-width: ${breakpoints.mobile}) {
+        font-size: 20px;
+        margin: 20px;
+    }
 `
 
 const StyledSpan = styled.span`
