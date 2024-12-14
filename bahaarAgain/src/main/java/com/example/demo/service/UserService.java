@@ -14,4 +14,6 @@ public interface UserService {
     public List<Garden> findGardensByUserId(String userId);
     public List<Plant> findPlantsByGardenId(String gardenId);
     public Optional<UserDetails> findById(String Id);
+
+    public boolean validatePass(String hashedPass, String rawPass);
 }

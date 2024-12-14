@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.demo.entity.Garden;
 import com.example.demo.entity.Plant;
@@ -21,8 +22,12 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private PlantRepository plantRepo;
 
+	private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 	@Override
 	public UserDetails createUser(UserDetails user) {
+		String hashedPass = passwordEncoder.encode(user.getPassword());
+		user.setPassword(hashedPass);
 		return userRepo.save(user);
 	}
 
@@ -49,5 +54,10 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Optional<UserDetails> findById(String Id) {
 		return userRepo.findById(Id);
+	}
+
+	@Override
+	public boolean validatePass(String hashedPass, String rawPass) {
+		return passwordEncoder.matches(rawPass, hashedPass);
 	}
 }

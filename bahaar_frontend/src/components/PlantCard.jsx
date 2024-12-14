@@ -135,7 +135,7 @@ export const PlantCard = ({ plant, gardenId, edit, plantAdded, refreshPlants, se
                 <StyledDelete>
                     <DeleteIcon htmlColor="white" onClick={(e) => {
                             e.stopPropagation()
-                            if(window.confirm(`Are you sure you want to delete ${plant.name} ?`))
+                            if(window.confirm(`This will delete all the entries for ${plant.name}, are you sure you want to delete it?`))
                             handleDelete();
                         }}/>
                 </StyledDelete>

@@ -35,7 +35,7 @@ public class UserController {
         if (dbUser != null) {
             String dbpass = dbUser.getPassword();
             String userpass = user.getPassword();
-            if (dbpass.trim().equals(userpass.trim())) {
+            if (userService.validatePass(dbpass.trim(), userpass.trim())) {
                 Map<String, Object> responseBody = new HashMap<>();
                 responseBody.put("message", "Login successful");
                 responseBody.put("user", dbUser);
@@ -50,7 +50,6 @@ public class UserController {
     
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> register(@RequestBody UserDetails user) {
-//    	System.out.println("Newuser= "+user);
         UserDetails existingUser = userService.findUserByEmail(user.getEmail());
         Map<String, Object> responseBody = new HashMap<>();
         if (existingUser != null) {
