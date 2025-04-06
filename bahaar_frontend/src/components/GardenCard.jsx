@@ -8,6 +8,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { getTodaysDate } from "../utils/util";
 import { useNavigate } from "react-router-dom";
+import ClearIcon from '@mui/icons-material/Clear';
 
 export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refreshGardens, onClickHandler}) => {
 
@@ -134,7 +135,7 @@ export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refresh
                         <StyledGardenDetails color="#749F2A">{0}</StyledGardenDetails>
                         <br />
                         <MyButton text={'Save'} Icon={<SaveIcon fontSize="medium" />} width={'120px'} action={handleSave} />
-                        <StyledDelete><DeleteIcon htmlColor="white" onClick={() => gardenAdded(false)}/></StyledDelete>
+                        <StyledDelete><ClearIcon htmlColor="white" onClick={() => gardenAdded(false)}/></StyledDelete>
                     </GardenDataContainer>
                     <GardenEmptyImgContainer width='40%'>
                         <MyButton text={imageName ? imageName : 'Add image'} Icon={<InsertPhotoIcon fontSize="medium" />} width={'150px'} action={handleClick}></MyButton>

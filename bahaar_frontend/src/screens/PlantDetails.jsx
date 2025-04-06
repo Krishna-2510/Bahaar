@@ -13,7 +13,7 @@ import { PlantHistoryCard } from "../components/PlantHistoryCard";
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import axios from "axios";
 import { NotificationBox } from "../components/NotificationBox";
-
+import CancelIcon from '@mui/icons-material/Cancel';
 
 
 export const PlantDetails = () => {
@@ -99,6 +99,7 @@ export const PlantDetails = () => {
     }
 
     useEffect(() => {
+        // console.log("INSIDE EFFECT currIND changed")
         const timer = setTimeout(() => {
             setIsVisible(true);
         }, 100);
@@ -107,11 +108,13 @@ export const PlantDetails = () => {
     }, [currInd]);
 
     const handleOnClick = (ind) => {
-        console.log("Index here is equals to = ", ind, ' and allplants  = ', allPlants);
-        setIsVisible(false);
-        setCurrInd(ind);
-        console.log("CURR = ", allPlants[ind]);
-        setCurrPlant(allPlants[ind]);
+        if(ind != currInd){
+            // console.log("Index here is equals to = ", ind, ' and allplants  = ', allPlants);
+            setIsVisible(false);
+            setCurrInd(ind);
+            console.log("CURR = ", allPlants[ind]);
+            setCurrPlant(allPlants[ind]);
+        }
     }
 
     const [plantInput, setPlantInput] = useState({
@@ -170,6 +173,15 @@ export const PlantDetails = () => {
             //setCurrPlant(newPlant); // Optionally set current plant to the new one
             setAddingNewPlant(false);
             setRefreshPlants(true);
+            setPlantInput({
+                plantName: plant.name,
+                water: 'Select an option',
+                sunlight: 'Select an option',
+                fertilizer: 'Select an option',
+                note: '',
+                imageFile: ''
+            })
+            setImageName('')
 
             // plantAdded(false);
             // setTimeout(() => {
@@ -212,6 +224,19 @@ export const PlantDetails = () => {
             window.removeEventListener("keydown", handleKeyPressEvent);
         };
     })
+
+    const handleCancel = () => {
+        setPlantInput({
+            plantName: plant.name,
+            water: 'Select an option',
+            sunlight: 'Select an option',
+            fertilizer: 'Select an option',
+            note: '',
+            imageFile: ''
+        })
+        setImageName('')
+        setAddingNewPlant(false)
+    }
 
     return (
         <>
@@ -268,9 +293,10 @@ export const PlantDetails = () => {
 
                                 <p style={{ position: 'absolute', bottom: '0' }}>
                                     <MyButton text={'Save'} Icon={<SaveIcon fontSize="medium" />} width={'120px'} action={() => handleSave()} />
+                                    <MyButton text={'Cancel'} Icon={<CancelIcon fontSize="medium" />} width={'120px'} action={() => handleCancel()} />
                                 </p>
                             </PlantDataContainer>}
-                        {!addingNewPlant ? <img style={{ width: '50%', height: '100%', objectFit: 'cover', borderRadius: '30px' }} src={currImage} alt="Money Plant" />
+                        {!addingNewPlant ? <img style={{ width: '50%', height: '100%', objectFit: 'cover', borderRadius: '30px', boxShadow: '4px 4px 8px rgb(0, 0 ,0 ,80%)' }} src={currImage} alt="Money Plant" />
                             :
                             <GardenEmptyImgContainer width='50%'>
                                 <MyButton text={imageName ? imageName : 'Add image'} Icon={<InsertPhotoIcon fontSize="medium" />} width={'150px'} action={handleClick}></MyButton>

@@ -4,6 +4,7 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import { MyButton } from "./MyButton";
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ClearIcon from '@mui/icons-material/Clear';
 import axios from "axios";
 import { calculateAge } from "../utils/util";
 import { fertilizerOptions, sunlightOptions, waterOptions } from "../utils/constantData";
@@ -184,7 +185,7 @@ export const PlantCard = ({ plant, gardenId, edit, plantAdded, refreshPlants, se
                 <StyledTextarea maxLength={246} value={plantInput.note} onChange={(e) => setPlantInput({...plantInput, note: e.target.value})}/>
                 <MyButton text={'Save'} Icon={<SaveIcon fontSize="medium" />} width={'120px'} action={handleSave} />
                 <StyledDelete>
-                    <DeleteIcon htmlColor="white" onClick={(e) => {
+                    <ClearIcon htmlColor="white" onClick={(e) => {
                             plantAdded(false)
                         }}/>
                 </StyledDelete>

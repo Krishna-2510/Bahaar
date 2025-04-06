@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useMediaQuery } from "@mui/material";
 import axios from "axios";
 import { FlexContainer, GardenContainer, StyledAuthHeading, StyledAuthText, StyledHeader, StyledHeaderContent, StyledSpan, StyledUserName } from "../style/style";
 import { Navbar } from "../components/Navbar";
@@ -18,7 +19,7 @@ export const Account = () => {
         variant: null,
         message: ''
     });
-    
+
     const [refreshGardens, setRefreshGardens] = useState(false);
     const navigate = useNavigate();
 
@@ -46,12 +47,12 @@ export const Account = () => {
     }
 
     useEffect(() => {
-        if(refreshGardens)
+        if (refreshGardens)
             getGardens();
-    },[refreshGardens]);
+    }, [refreshGardens]);
 
     const loadGardenDetails = (garden) => {
-        navigate('/bahaar/garden', {state: {garden, edit: false}})
+        navigate('/bahaar/garden', { state: { garden, edit: false } })
     }
 
     return (
@@ -60,36 +61,38 @@ export const Account = () => {
                 <Navbar />
                 <StyledHeaderContent>
                     <StyledAuthHeading>Welcome - <StyledUserName>{userName}</StyledUserName></StyledAuthHeading>
-                    <MyButton text={'Add garden'} Icon={<AddIcon fontSize="medium" />} width={'150px'} action={() => setAddingNewGarden(true)} />
+                    <MyButton text={'Add garden'} Icon={<AddIcon style={{
+                        fontSize: useMediaQuery("(max-width: 480px)") ? "1.1rem" : "medium",
+                    }} />} width={'150px'} action={() => setAddingNewGarden(true)} />
                 </StyledHeaderContent>
             </StyledHeader>
             <GardenContainer>
                 {gardens.length === 0 && !addingNewGarden &&
-                <FlexContainer>
-                    <StyledAuthHeading>You don't have any gardens</StyledAuthHeading>
-                    <StyledAuthText color="#A5A5A5">Create your first garden now. <StyledSpan onClick={() => setAddingNewGarden(true)}>Create</StyledSpan></StyledAuthText>
-                </FlexContainer>
+                    <FlexContainer>
+                        <StyledAuthHeading>You don't have any gardens</StyledAuthHeading>
+                        <StyledAuthText color="#A5A5A5">Create your first garden now. <StyledSpan onClick={() => setAddingNewGarden(true)}>Create</StyledSpan></StyledAuthText>
+                    </FlexContainer>
                 }
-                {gardens.map((garden) => 
-                <GardenCard key={garden.id} 
-                            garden={garden} edit={false} 
-                            gardenAdded={setAddingNewGarden} 
-                            setNotification={setNotificationDetails} 
-                            refreshGardens={setRefreshGardens}
-                            onClickHandler={() => loadGardenDetails(garden)}/>
+                {gardens.map((garden) =>
+                    <GardenCard key={garden.id}
+                        garden={garden} edit={false}
+                        gardenAdded={setAddingNewGarden}
+                        setNotification={setNotificationDetails}
+                        refreshGardens={setRefreshGardens}
+                        onClickHandler={() => loadGardenDetails(garden)} />
                 )}
 
-                {addingNewGarden && 
-                <GardenCard edit={true} 
-                            gardenAdded={setAddingNewGarden} 
-                            setNotification={setNotificationDetails} 
-                            refreshGardens={setRefreshGardens}/>
+                {addingNewGarden &&
+                    <GardenCard edit={true}
+                        gardenAdded={setAddingNewGarden}
+                        setNotification={setNotificationDetails}
+                        refreshGardens={setRefreshGardens} />
                 }
 
-                {notificationDetails.show && 
-                <NotificationBox variant={notificationDetails?.variant} 
-                                    message={notificationDetails?.message} 
-                                    closed={closed}/>
+                {notificationDetails.show &&
+                    <NotificationBox variant={notificationDetails?.variant}
+                        message={notificationDetails?.message}
+                        closed={closed} />
                 }
             </GardenContainer>
         </>
