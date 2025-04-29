@@ -18,7 +18,7 @@ export const NotificationBox = ({ variant, message, closed }) => {
             {show && variant === 'success' &&
                 <StyledNotification ref={notifRef} outline='#81d158'>
                     <NotifDetails>
-                        <DoneIcon fontSize="large" htmlColor="#81d158" />
+                        <DoneIcon fontSize="medium" htmlColor="#81d158" />
                         <StyledNotifMessage><NotifHeading color="#81d158">Success:</NotifHeading>{message}</StyledNotifMessage>
                     </NotifDetails>
                     <CloseIcon fontSize="small" htmlColor="white" onClick={() => {
@@ -30,7 +30,7 @@ export const NotificationBox = ({ variant, message, closed }) => {
             {show && variant === 'error' &&
                 <StyledNotification ref={notifRef} outline='#f16a6a'>
                     <NotifDetails>
-                        <PriorityHighIcon fontSize="large" htmlColor="#f16a6a" />
+                        <PriorityHighIcon fontSize="medium" htmlColor="#f16a6a" />
                         <StyledNotifMessage><NotifHeading color="#f16a6a">Error:</NotifHeading>{message}</StyledNotifMessage>
                     </NotifDetails>
                     <CloseIcon fontSize="small" htmlColor="white" onClick={() => {

@@ -6,7 +6,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import AddIcon from '@mui/icons-material/Add';
 import { calculateAge } from "../utils/util";
 import { fertilizerMapping, fertilizerOptions, sunlightMapping, sunlightOptions, waterMapping, waterOptions } from "../utils/constantData";
-import { AnimatedContent, GardenEmptyImgContainer, MainContainer, PlantContainer, PlantDataContainer, PlantDetailsContainer, StyledLeftChevron, StyledPlantData1, StyledPlantData2, StyledPlantData3, StyledPlantNote, StyledRightChevron, StyledSelect, StyledTextareaPlant } from "../style/style";
+import { AnimatedContent, GardenEmptyImgContainer, MainContainer, PlantContainer, PlantDataContainer, PlantDetailsContainer, StyledLeftChevron, StyledPlantData1, StyledPlantData2, StyledPlantData3, StyledPlantDetailsImage, StyledPlantNote, StyledRightChevron, StyledSelect, StyledTextareaPlant } from "../style/style";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { PlantHistoryCard } from "../components/PlantHistoryCard";
@@ -35,9 +35,8 @@ export const PlantDetails = () => {
         variant: null,
         message: ''
     });
-    const navigate = useNavigate();
-
-    // console.log("Plant = ", location.state.plant);
+    
+    
 
     useEffect(() => {
 
@@ -252,9 +251,9 @@ export const PlantDetails = () => {
                                 <StyledPlantData2>Sunlight: <StyledPlantData3>{sunlightMapping[currPlant?.sunlight]}</StyledPlantData3></StyledPlantData2>
                                 <StyledPlantData2>Fertilizer: <StyledPlantData3>{fertilizerMapping[currPlant?.fertilizer]}</StyledPlantData3></StyledPlantData2>
                                 <StyledPlantNote>{currPlant?.note}</StyledPlantNote>
-                                <p style={{ position: 'absolute', bottom: '0' }}>
+                                {/* <p style={{ position: 'absolute' }}> */}
                                     <MyButton text={'Add new'} Icon={<AddIcon fontSize="medium" />} width={'150px'} action={() => { setAddingNewPlant(true) }} />
-                                </p>
+                                {/* </p> */}
                             </PlantDataContainer>
                             :
                             <PlantDataContainer>
@@ -291,12 +290,12 @@ export const PlantDetails = () => {
                                 </StyledPlantData2>
                                 <StyledTextareaPlant placeholder="Write a note" maxLength={246} value={plantInput.note} onChange={(e) => setPlantInput({ ...plantInput, note: e.target.value })} />
 
-                                <p style={{ position: 'absolute', bottom: '0' }}>
+                                {/* <p style={{ position: 'absolute', bottom: '0' }}> */}
                                     <MyButton text={'Save'} Icon={<SaveIcon fontSize="medium" />} width={'120px'} action={() => handleSave()} />
                                     <MyButton text={'Cancel'} Icon={<CancelIcon fontSize="medium" />} width={'120px'} action={() => handleCancel()} />
-                                </p>
+                                {/* </p> */}
                             </PlantDataContainer>}
-                        {!addingNewPlant ? <img style={{ width: '50%', height: '100%', objectFit: 'cover', borderRadius: '30px', boxShadow: '4px 4px 8px rgb(0, 0 ,0 ,80%)' }} src={currImage} alt="Money Plant" />
+                        {!addingNewPlant ? <StyledPlantDetailsImage src={currImage} alt="Money Plant" />
                             :
                             <GardenEmptyImgContainer width='50%'>
                                 <MyButton text={imageName ? imageName : 'Add image'} Icon={<InsertPhotoIcon fontSize="medium" />} width={'150px'} action={handleClick}></MyButton>
@@ -307,10 +306,10 @@ export const PlantDetails = () => {
                 </MainContainer>
                 {!addingNewPlant && <>
                     <StyledLeftChevron onClick={() => loadNext(-1)}>
-                        <ArrowBackIosIcon fontSize="large" />
+                        <ArrowBackIosIcon fontSize="medium" />
                     </StyledLeftChevron>
                     <StyledRightChevron onClick={() => loadNext(1)}>
-                        <ArrowForwardIosIcon fontSize="large" />
+                        <ArrowForwardIosIcon fontSize="medium" />
                     </StyledRightChevron>
                 </>}
             </PlantDetailsContainer>

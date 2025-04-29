@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlexContainer, GardenContainer, PlantContainer, StyledAuthHeading, StyledAuthText, StyledGardenDetails, StyledHeader, StyledHeaderContent, StyledHeaderText, StyledSpan, StyledUserName } from "../style/style";
+import { FlexContainer, GardenContainer, PlantContainer, StyledAuthHeading, StyledAuthText, StyledGardenDetails, StyledHeader, StyledHeaderContent, StyledHeaderText, StyledSpan, StyledUserName, StyledGardenDetails2 } from "../style/style";
 import { Navbar } from "../components/Navbar";
 import { MyButton } from "../components/MyButton";
 import AddIcon from '@mui/icons-material/Add';
@@ -80,12 +80,12 @@ export const GardenDetails = () => {
                     <div>
                         <StyledAuthHeading><StyledUserName>{garden.name}</StyledUserName></StyledAuthHeading>
                         <div>
-                            <StyledGardenDetails color="white">Created on:</StyledGardenDetails>
-                            <StyledGardenDetails color="white">{garden.createdOn}</StyledGardenDetails>
+                            <StyledGardenDetails2 color="white">Created on:</StyledGardenDetails2>
+                            <StyledGardenDetails2 color="white">{garden.createdOn}</StyledGardenDetails2>
                         </div>
                         <div>
-                            <StyledGardenDetails color="white">Total plants:</StyledGardenDetails>
-                            <StyledGardenDetails color="white">{plants.length}</StyledGardenDetails>
+                            <StyledGardenDetails2 color="white">Total plants:</StyledGardenDetails2>
+                            <StyledGardenDetails2 color="white">{plants.length}</StyledGardenDetails2>
                         </div>
                     </div>
                     <MyButton text={'Add plant'} Icon={<AddIcon fontSize="medium" />} width={'150px'} action={() => setAddingNewPlant(true)} />

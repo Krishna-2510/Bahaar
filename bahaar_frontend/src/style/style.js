@@ -5,9 +5,9 @@ import roundLeavesImage from "../images/roundLeavesBg.jpg"
 
 const breakpoints = {
     mobile: '480px',
-    tablet: '768px',
+    tablet: '820px',
     desktop: '1024px',
-  };
+};
 
 const FullLandingScreen = styled.div`
     height:100%;
@@ -31,6 +31,7 @@ const FullLandingScreen = styled.div`
         filter: brightness(40%);
         z-index: -1;
       }
+        
 `
 const FlexContainer = styled.div`
     display:flex;
@@ -47,7 +48,7 @@ const StyledMainHeading = styled.h1`
     margin:0;
 
     @media (max-width: ${breakpoints.tablet}) {
-    font-size: 7rem;
+        font-size: 7rem;
     }
 
     @media (max-width: ${breakpoints.mobile}) {
@@ -81,7 +82,7 @@ const StyledSpan = styled.span`
 `
 
 const StyledButton = styled.button`
-    width:${({width}) => width};
+    width:${({ width }) => width};
     height: 50px;
     border: none;
     border-radius: 25px;
@@ -98,6 +99,13 @@ const StyledButton = styled.button`
     &:active {
         background: #55761e;
     }
+
+    @media (max-width: ${breakpoints.mobile}) {
+        width: 100px;
+        height: 40px;
+        font-size: 13px;
+        margin: 5px;
+    }
 `
 
 const StyledButtonContent = styled.div`
@@ -107,7 +115,6 @@ const StyledButtonContent = styled.div`
 `
 
 const StyledNav = styled.div`
-    position: sticky;
     top: 0;
     display: flex;
     justify-content: space-between;
@@ -120,6 +127,11 @@ const StyledLogoContainer = styled.div`
     width: 40px;
     border-radius: 50px;
     background: white;
+
+     @media (max-width: ${breakpoints.mobile}) {
+                height: 32px;
+                width: 32px
+            }
 `
 // ----------------------------------------------------------------------------------------------------------
 
@@ -156,7 +168,11 @@ const StyledInputContainer = styled.div`
     background: white;
     padding: 0 10px;
     margin: 10px;
-    background: #D9D9D9
+    background: #D9D9D9;
+
+    @media (max-width: ${breakpoints.mobile}) {
+        width: 85%;
+    }
 `
 
 const StyledInput = styled.input`
@@ -170,11 +186,15 @@ const StyledInput = styled.input`
     &::placeholder {
         color: #A5A5A5;
         text-align: inherit;
-        font-size: inherit
+        font-size: inherit;
     };
 
     &:focus {
         outline: none;
+    }
+
+    @media (max-width: ${breakpoints.mobile}) {
+        font-size: 16px;
     }
 `
 
@@ -185,17 +205,35 @@ const StyledAuthContainer = styled.div`
     flex-direction: column;
     background-color: rgb(0 0 0 / 50%);
     border-radius: 22px;
+
+    @media (max-width: ${breakpoints.tablet}) {
+        width: 75%;
+    }
+
+    @media (max-width: ${breakpoints.mobile}) {
+        width: 85%;
+    }
 `
 
 const StyledAuthHeading = styled.p`
     color: white;
     font-size: 50px;
     margin: 0;
+    
+
+    @media (max-width: ${breakpoints.mobile}) {
+        font-size: 28px;
+    }
 `
 const StyledAuthText = styled.p`
-    color: ${({color}) => color};
+    color: ${({ color }) => color};
     font-size: 22px;
     margin: 0 0 20px 0;
+
+    @media (max-width: ${breakpoints.mobile}) {
+        font-size: 18px;
+        margin: 0 0 15px 0;
+    }
 `
 const Spacer = styled.div`
     margin: 10px;
@@ -224,6 +262,9 @@ z-index: 0;
     background-position: inherit;
     filter: brightness(45%);
     z-index: -1;
+    @media (max-width: ${breakpoints.mobile}) {
+      height: 105%;
+  }
   }
 `
 
@@ -233,12 +274,24 @@ const StyledHeaderContent = styled.div`
     align-items: flex-end;
     height: 70%;
     padding: 0 100px;
+
+    @media (max-width: ${breakpoints.mobile}) {
+       display: block;
+       padding: 0 32px;
+    }
+
+
 `
 
 const StyledUserName = styled.span`
     color: white;
     font-size: 50px;
     font-weight: bold;
+
+    @media (max-width: ${breakpoints.mobile}) {
+        font-size: 32px;
+        display: block;
+    }
 `
 
 // -------------------------------------------------------------------------------------------------------------
@@ -247,6 +300,14 @@ const GardenContainer = styled.div`
     padding: 70px 10px;
     min-height: 60%;
     background: #1D201B;
+
+    @media (max-width: ${breakpoints.mobile}) {
+        padding-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
 `
 const StyledGardenCard = styled.div`
     background-color: #161815;
@@ -263,38 +324,81 @@ const StyledGardenCard = styled.div`
     &:hover {
         box-shadow: 8px 8px 10px rgb(0, 0 ,0 );
     }
+
+    @media (max-width: ${breakpoints.mobile}) {
+        display: grid;
+        height: auto;
+        grid-template-areas:
+            "GardenImgContainer"
+            "GardenDataContainer";
+    }
 `
 const GardenDataContainer = styled.div`
     width:  60%;
+    @media (max-width: ${breakpoints.mobile}) {
+       grid-area: GardenDataContainer;
+       width: 100%;
+    }
 `
 
 const GardenImgContainer = styled.div`
     width:  40%;
     border-radius: 30px;
-    background-image: url(${({bgImage}) => bgImage});
+    background-image: url(${({ bgImage }) => bgImage});
     background-size: cover;
     background-position: center;
+
+    @media (max-width: ${breakpoints.mobile}) {
+         width:  100%;
+         height: 250px;
+         grid-area: GardenImgContainer
+    }
 `
 
 const GardenEmptyImgContainer = styled.div`
-    width:  ${({width}) => (width)};
+    width:  ${({ width }) => (width)};
     border-radius: 30px;
     background: #535353;
     display: flex;
     justify-content: center;
-    align-items: center 
+    align-items: center;
+    
+    @media (max-width: ${breakpoints.mobile}) {
+         width:  100%;
+         height: 250px;
+         grid-area: GardenImgContainer
+    }
 `
 
 const StyledGardenName = styled.div`
     color: white;
     font-size: 35px;
     margin: 10px 10px;
-    font-weight: bold
+    font-weight: bold;
+    @media (max-width: ${breakpoints.mobile}) {
+            font-size: 24px;
+            margin: 0px 10px;
+        }
+    
 `
 const StyledGardenDetails = styled.span`
-    color: ${({color}) => color};
+    color: ${({ color }) => color};
     font-size: 30px;
     margin: 0 10px;
+    @media (max-width: ${breakpoints.mobile}) {
+                font-size: 20px;
+            }
+    
+`
+const StyledGardenDetails2 = styled.span`
+    color: ${({ color }) => color};
+    font-size: 30px;
+    margin: 0 10px;
+    @media (max-width: ${breakpoints.mobile}) {
+                font-size: 18px;
+                margin: 0 1px;
+            }
+    
 `
 const GardenNameInput = styled.input`
     width: 90%;
@@ -312,13 +416,23 @@ const GardenNameInput = styled.input`
 
     &:focus {
         outline: none;
-    }
+    };
+
+     @media (max-width: ${breakpoints.mobile}) {
+                font-size: 24px;
+            }
 `
 
 const StyledDelete = styled.div`
     position: absolute;
     top: 20px;
     right: 20px;
+
+    @media (max-width: ${breakpoints.mobile}) {
+                top: 15px;
+                right: 12px;
+            }
+    
 `
 // ------------------------------------------------------------------------------------------------------------
 
@@ -351,12 +465,18 @@ const StyledNotification = styled.div`
     border: 1px solid;
     border-color: ${({ outline }) => outline};
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+    @media (max-width: ${breakpoints.mobile}) {
+        width: auto;
+    }
 `;
 
 const StyledNotifMessage = styled.div`
     color: white;
     font-size: 22px;
     margin: 5px;
+    @media (max-width: ${breakpoints.mobile}) {
+        font-size: 15px;
+    }
 `
 
 const NotifDetails = styled.div`
@@ -364,10 +484,14 @@ const NotifDetails = styled.div`
     align-items: center;
 `
 const NotifHeading = styled.span`
-    color: ${({color}) => color};
+    color: ${({ color }) => color};
     font-weight:bold;
     font-size:24px;
     margin: 0 5px;
+    font-size: 22px;
+    @media (max-width: ${breakpoints.mobile}) {
+        font-size: 16px;
+    }
 `
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -406,6 +530,14 @@ const PlantContainer = styled.div`
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid */
     gap: 35px; /* Space between grid items */
     align-items: flex-start; /* Align items to the start */
+
+    @media (max-width: ${breakpoints.mobile}) {
+        padding: 32px;
+        grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); /* Responsive grid */
+        gap: 20px;
+    }
+
+
 `;
 
 const PlantWrapper = styled.div`
@@ -420,6 +552,10 @@ const PlantWrapper = styled.div`
     position: relative;
     border: ${({ isActive }) => (isActive ? '2px solid white' : 'none')};
     transition: border 0.2s ease;
+    @media (max-width: ${breakpoints.mobile}) {
+        width: 100%;
+        min-height: 12rem;
+    }
 `;
 
 const StyledPlantName = styled.div`
@@ -428,6 +564,11 @@ const StyledPlantName = styled.div`
     padding-left: 1.5rem;
     font-size: 2.2rem;
     font-weight: bold;
+    @media (max-width: ${breakpoints.mobile}) {
+        padding-left: 1rem;
+        font-weight: normal;
+        font-size: 1.2rem;
+    }
 `
 
 const StyledPlantInfo = styled.div`
@@ -436,10 +577,17 @@ const StyledPlantInfo = styled.div`
     font-size: 1.8rem;
     padding-left: 1.5rem;
     font-weight: 400;
+    @media (max-width: ${breakpoints.mobile}) {
+        padding-left: 1rem;
+        font-size: 1rem;
+    }
 `
 
 const PlantImageContainer = styled.div`
     height: 20rem;
+    @media (max-width: ${breakpoints.mobile}) {
+        height:100%;
+    }
 `
 const PlantInfoContainer = styled.div`
     min-height: 1rem;
@@ -461,6 +609,12 @@ const PlantNameInput = styled.input`
 
     &:focus {
         outline: none;
+    };
+    
+    @media (max-width: ${breakpoints.mobile}) {
+        font-size: 20px;
+        width: 80%;
+        margin: 10px 10px;
     }
         
 `
@@ -479,6 +633,11 @@ const StyledSelect = styled.select`
     background-position: right 10px center;
     background-size: 24px; 
     border-radius: 30px;
+    @media (max-width: ${breakpoints.mobile}) {
+        font-size: 0.8rem;
+        padding: 1px;
+        width:100%;
+    }
 `
 
 const StyledPlantInfoInput = styled.div`
@@ -494,6 +653,9 @@ const StyledEmptyImageContainer = styled.div`
     background: #535353; 
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
+    @media (max-width: ${breakpoints.mobile}) {
+        height:12rem;
+    }
 `
 
 const StyledTextarea = styled.textarea`
@@ -507,6 +669,12 @@ const StyledTextarea = styled.textarea`
     padding: 10px;
     resize: none;
     font-family: Jaldi;
+    @media (max-width: ${breakpoints.mobile}) {
+        min-height:10rem;
+        margin: 0.5rem 1rem;
+        width: 60%;
+        font-size: 1rem;
+    }
 `
 
 // ------============================================================================================================
@@ -523,18 +691,28 @@ const MainContainer = styled.div`
     gap: 2rem;
     flex-grow: 1;
     height: 80vh;
+    @media (max-width: ${breakpoints.mobile}) {
+        padding: 2rem;
+        height: auto;
+    }
 `
 
 const PlantDataContainer = styled.div`
     width: 50%;
     position: relative;
     padding: 10px;
+     @media (max-width: ${breakpoints.mobile}) {
+       width: 100%;
+    }
 `
 
 const StyledPlantData1 = styled.div`
     color: white;
     font-size: 3.5rem;
     margin: 0 0 3px 0;
+    @media (max-width: ${breakpoints.mobile}) {
+       font-size: 1.8rem;
+    }
 `
 const StyledPlantData2 = styled.div`
     color: white;
@@ -542,6 +720,9 @@ const StyledPlantData2 = styled.div`
     margin: 0 0 3px 0;
     display: flex;
     align-items: center;
+     @media (max-width: ${breakpoints.mobile}) {
+       font-size: 1rem;
+    }
 `
 const StyledPlantData3 = styled.span`
     color: #749F2A;
@@ -551,7 +732,10 @@ const StyledPlantNote = styled.div`
     color: white;
     font-size: 1.6rem;
     margin: 0 0 3px 0;
-    font-weight: normal 
+    font-weight: normal; 
+    @media (max-width: ${breakpoints.mobile}) {
+       font-size: 1rem;
+    }
 `
 const StyledRightChevron = styled.button`
     position: absolute;
@@ -560,6 +744,10 @@ const StyledRightChevron = styled.button`
     border: none;
     background: #1D201B;
     color: white;
+    @media (max-width: ${breakpoints.mobile}) {
+        top: 60%;
+        right: 1px;
+    }
 `
 const StyledLeftChevron = styled.button`
     position: absolute;
@@ -568,10 +756,14 @@ const StyledLeftChevron = styled.button`
     border: none;
     background: #1D201B;
     color: white;
+    @media (max-width: ${breakpoints.mobile}) {
+        top: 60%;
+        left:1px;
+    }
 `
 
 const WhiteBorder = styled.div`
-    border: ${({hasBorder}) => (hasBorder ? '2px solid white' : 'none')};
+    border: ${({ hasBorder }) => (hasBorder ? '2px solid white' : 'none')};
     padding: 0;
     border-radius: 30px;
 `
@@ -581,6 +773,11 @@ const AnimatedContent = styled.div`
         display: flex;
         transition: opacity 0.2s ease;
         width: 100%;
+
+        @media (max-width: ${breakpoints.mobile}) {
+            display: flex;
+            flex-direction: column-reverse;
+    }
 `
 
 const StyledTextareaPlant = styled.textarea`
@@ -594,6 +791,17 @@ const StyledTextareaPlant = styled.textarea`
     resize: none;
     font-family: Jaldi;
     margin: 0.5rem 0;
+`
+
+const StyledPlantDetailsImage = styled.img`
+    width: 50%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 30px;
+    box-shadow: 4px 4px 8px rgb(0, 0 ,0 ,80%);
+    @media (max-width: ${breakpoints.mobile}) {
+        width: 100%;
+    }
 `
 
 
@@ -652,5 +860,7 @@ export {
     StyledRightChevron,
     WhiteBorder,
     AnimatedContent,
-    StyledTextareaPlant
+    StyledTextareaPlant,
+    StyledGardenDetails2,
+    StyledPlantDetailsImage,
 }
