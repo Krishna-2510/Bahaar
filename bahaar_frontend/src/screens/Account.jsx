@@ -8,12 +8,18 @@ import AddIcon from '@mui/icons-material/Add';
 import { GardenCard } from "../components/GardenCard";
 import { NotificationBox } from "../components/NotificationBox";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 export const Account = () => {
     const userName = sessionStorage.getItem('userName');
     const userId = sessionStorage.getItem('userId');
-    const [gardens, setGardens] = useState([]);
+    // const [gardens, setGardens] = useState([]);
     const [addingNewGarden, setAddingNewGarden] = useState(false);
+    const [apiResponse, setApiResponse] = useState({
+        data: [],
+        loading: false,
+        error: false
+    });
     const [notificationDetails, setNotificationDetails] = useState({
         show: false,
         variant: null,
@@ -24,12 +30,26 @@ export const Account = () => {
     const navigate = useNavigate();
 
     const getGardens = async () => {
+        setApiResponse({
+            ...apiResponse,
+            loading: true
+        })
         try {
             const response = await axios.get(`http://localhost:8080/${userId}/gardens`);
-            setGardens(response.data);
+            // setGardens(response.data);
+            setApiResponse({
+                data: response.data,
+                loading: false,
+                error: false
+            });
             setRefreshGardens(false);
         } catch (error) {
             console.log('Error fetching gardens: ', error);
+            setApiResponse({
+                data: [],
+                loading: false,
+                error: true
+            })
         }
     }
 
@@ -67,13 +87,19 @@ export const Account = () => {
                 </StyledHeaderContent>
             </StyledHeader>
             <GardenContainer>
-                {gardens.length === 0 && !addingNewGarden &&
+                {
+                    apiResponse.loading && <Spinner width={"100px"} type={'general'}/>
+                }
+                {
+                    !apiResponse.loading && apiResponse.error && <h1 style={{ color: "red", textAlign: "center" }}>Some error occurred</h1>
+                }
+                {!apiResponse.loading && !apiResponse.error && apiResponse.data.length === 0 && !addingNewGarden &&
                     <FlexContainer>
                         <StyledAuthHeading>You don't have any gardens</StyledAuthHeading>
                         <StyledAuthText color="#A5A5A5">Create your first garden now. <StyledSpan onClick={() => setAddingNewGarden(true)}>Create</StyledSpan></StyledAuthText>
                     </FlexContainer>
                 }
-                {gardens.map((garden) =>
+                {!apiResponse.loading && !apiResponse.error && apiResponse.data.map((garden) =>
                     <GardenCard key={garden.id}
                         garden={garden} edit={false}
                         gardenAdded={setAddingNewGarden}

@@ -8,19 +8,24 @@ import axios from "axios";
 import { calculateAge } from "../utils/util";
 import { fertilizerOptions, sunlightOptions, waterOptions } from "../utils/constantData";
 import { useNavigate } from "react-router-dom";
+import Spinner from "./Spinner";
 
 
 export const PlantHistoryCard = ({ plant, isActive, onClick, gardenId, edit, plantAdded, refreshPlants, setNotification }) => {
 
     const [imagesrc, setImagesrc] = useState('');
+    const [loading, setLoading] = useState(false);
     const fetchImage = async () => {
+        setLoading(true);
         try {
             const response = await axios.get(plant.imageUrl);
             const base64Image = `data:image/jpeg;base64,${response.data.data}`;
             setImagesrc(base64Image);
+            setLoading(false);
         }
         catch (e) {
             console.log(e);
+            setLoading(false);
         }
     };
 
@@ -48,9 +53,11 @@ export const PlantHistoryCard = ({ plant, isActive, onClick, gardenId, edit, pla
 
     return (
             <PlantWrapper isActive = {isActive} onClick={onClick}> 
-                <PlantImageContainer>
+                {!loading ? <PlantImageContainer>
                     <img style={{ width: '100%', height: '100%', objectFit: 'cover', borderTopLeftRadius: '30px', borderTopRightRadius: '30px' }} src={imagesrc} alt="Money Plant" />
                 </PlantImageContainer>
+                :
+                <Spinner width={'100px'} type={'inline'}></Spinner>}
                 <PlantInfoContainer>
                     <StyledPlantName>{plant.name}</StyledPlantName>
                     <StyledPlantInfo>Age: {calculateAge(plant.addedOn)}</StyledPlantInfo>

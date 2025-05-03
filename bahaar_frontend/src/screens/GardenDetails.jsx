@@ -8,6 +8,7 @@ import { NotificationBox } from "../components/NotificationBox";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PlantCard } from "../components/PlantCard";
 import axios from "axios";
+import Spinner from "../components/Spinner";
 
 export const GardenDetails = () => {
 
@@ -17,6 +18,11 @@ export const GardenDetails = () => {
 
     console.log("LOCATION = ", location.state)
     const [plants, setPlants] = useState([]);
+    const [apiResponse, setApiResponse] = useState({
+        data: [],
+        loading: false,
+        error: false
+    });
     const [addingNewPlant, setAddingNewPlant] = useState(false);
     const [refreshPlants, setRefreshPlants] = useState(false);
     const [notificationDetails, setNotificationDetails] = useState({
@@ -54,14 +60,28 @@ export const GardenDetails = () => {
 
     const getPlants = async () => {
         console.log('API called')
+        setApiResponse({
+            ...apiResponse,
+            loading: true
+        })
         try {
             const response = await axios.get(`http://localhost:8080/${garden.id}/recentPlants`);
             setPlants(response.data);
+            setApiResponse({
+                data: response.data,
+                loading: false,
+                error: false
+            });
             if (!isEdit)
                 setAddingNewPlant(false);
         }
         catch (error) {
             console.error('Error fetching response ', error);
+            setApiResponse({
+                data: [],
+                loading: false,
+                error: true
+            })
         }
     };
 
@@ -85,14 +105,19 @@ export const GardenDetails = () => {
                         </div>
                         <div>
                             <StyledGardenDetails2 color="white">Total plants:</StyledGardenDetails2>
-                            <StyledGardenDetails2 color="white">{plants.length}</StyledGardenDetails2>
+                            <StyledGardenDetails2 color="white">{apiResponse.data.length}</StyledGardenDetails2>
                         </div>
                     </div>
                     <MyButton text={'Add plant'} Icon={<AddIcon fontSize="medium" />} width={'150px'} action={() => setAddingNewPlant(true)} />
                 </StyledHeaderContent>
             </StyledHeader>
-
-            {plants.length === 0 && !addingNewPlant && 
+            {
+                apiResponse.loading && <GardenContainer><Spinner width={"100px"} type={'general'}/></GardenContainer>
+            }
+            {
+                !apiResponse.loading && apiResponse.error && <h1 style={{ color: "red", textAlign: "center" }}>Some error occurred</h1>
+            }
+            {!apiResponse.loading && !apiResponse.error && apiResponse.data.length === 0 && !addingNewPlant &&
                 <GardenContainer>
                     <FlexContainer>
                         <StyledAuthHeading>You don't have any plants</StyledAuthHeading>
@@ -101,28 +126,28 @@ export const GardenDetails = () => {
                 </GardenContainer>
             }
 
-            {(plants.length > 0 || addingNewPlant) &&
+            {!apiResponse.loading && !apiResponse.error && (apiResponse.data.length > 0 || addingNewPlant) &&
                 <PlantContainer>
-                    {plants.map((plant) => (
-                            <PlantCard key={plant.id} 
-                                        plant={plant} 
-                                        edit={false} 
-                                        gardenId={garden.id} 
-                                        plantAdded={setAddingNewPlant} 
-                                        refreshPlants={setRefreshPlants} 
-                                        setNotification={setNotificationDetails}/>
-                                        
+                    {apiResponse.data.map((plant) => (
+                        <PlantCard key={plant.id}
+                            plant={plant}
+                            edit={false}
+                            gardenId={garden.id}
+                            plantAdded={setAddingNewPlant}
+                            refreshPlants={setRefreshPlants}
+                            setNotification={setNotificationDetails} />
+
                     ))}
 
-                    {addingNewPlant && <PlantCard edit={true} 
-                                                  gardenId={garden.id} 
-                                                  plantAdded={setAddingNewPlant} 
-                                                  refreshPlants={setRefreshPlants} 
-                                                  setNotification={setNotificationDetails}/>
+                    {addingNewPlant && <PlantCard edit={true}
+                        gardenId={garden.id}
+                        plantAdded={setAddingNewPlant}
+                        refreshPlants={setRefreshPlants}
+                        setNotification={setNotificationDetails} />
                     }
-                    
+
                     {notificationDetails.show &&
-                        <NotificationBox 
+                        <NotificationBox
                             variant={notificationDetails?.variant}
                             message={notificationDetails?.message}
                             closed={closed} />

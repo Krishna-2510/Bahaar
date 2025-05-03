@@ -9,6 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { getTodaysDate } from "../utils/util";
 import { useNavigate } from "react-router-dom";
 import ClearIcon from '@mui/icons-material/Clear';
+import Spinner from "./Spinner";
 
 export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refreshGardens, onClickHandler}) => {
 
@@ -18,16 +19,20 @@ export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refresh
     const today = getTodaysDate();
     const hiddenFileInput = useRef(null);
     const [imageName, setImageName] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const fetchImage = async () => {
+        setLoading(true);
         try {
             const response = await axios.get(garden.imageUrl);
             const base64Image = `data:image/jpeg;base64,${response.data.data}`;
             setImagesrc(base64Image);
+            setLoading(false);
         }
         catch (e) {
             console.log(e);
+            setLoading(false);
         }
     };
 
@@ -120,8 +125,11 @@ export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refresh
                             handleDelete();
                         }}/></StyledDelete>
                     </GardenDataContainer>
-                    <GardenImgContainer bgImage={imagesrc}>
-                    </GardenImgContainer>
+                    {!loading ? <GardenImgContainer bgImage={imagesrc}/>
+                    :
+                    <GardenImgContainer>
+                        <Spinner width={'100px'} type={'inline'}></Spinner>
+                    </GardenImgContainer>}
                 </>
                 :
                 <>

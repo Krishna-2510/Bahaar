@@ -1,34 +1,41 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+import plantSpinner from '../plantSpinner.png'
+import imageSpinner from '../imageSpinner.png'
 
 const SpinnerContainer = styled.div`
   width: ${({ width }) => width};
   height: ${({ width }) => width};
   position: relative;
-  margin: 10px auto;
+  margin: 50px auto;
 `;
 
-const DoubleBounce1 = styled.div`
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: #333;
-  opacity: 0.6;
-  position: absolute;
-  top: 0;
-  left: 0;
-  animation: sk-bouncedelay 1.2s infinite ease-in-out;
+const pulse = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
 `;
 
-const DoubleBounce2 = styled(DoubleBounce1)`
-  animation-delay: -0.12s;
+const SpinnerImage = styled.img`
+  animation: ${pulse} 0.8s infinite ease-in-out;
 `;
 
-const Spinner = ({ width }) => {
+const Spinner = ({ width, type }) => {
   return (
     <SpinnerContainer width={width}>
-      <DoubleBounce1 />
-      <DoubleBounce2 />
+      {
+        type == 'general' ?
+          <SpinnerImage width={width} src={plantSpinner} />
+          :
+          <SpinnerImage width={width} src={imageSpinner} /> // type = "inline"
+      }
+
     </SpinnerContainer>
   );
 };

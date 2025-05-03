@@ -5,21 +5,21 @@ import { LoginForm } from "../components/LoginForm";
 import { RegistrationForm } from "../components/RegistrationForm";
 
 export const AuthenticationPage = () => {
-    const [showLogin, setShowlogin]  = useState(true);
+    const [showLogin, setShowlogin] = useState(true);
     const toggleLogin = () => {
         setShowlogin(!showLogin);
     }
-    return(
+    return (
         <FullAuthScreen>
-        <Navbar/>
-        <FlexContainer>
-        {
-            showLogin ?
-            <LoginForm toggleLogin={toggleLogin}/>
-            :
-            <RegistrationForm toggleLogin={toggleLogin}/>
-        }
-        </FlexContainer>
+            <Navbar />
+            <FlexContainer>
+                {
+                    showLogin ?
+                        <LoginForm toggleLogin={toggleLogin} />
+                        :
+                        <RegistrationForm toggleLogin={toggleLogin} />
+                }
+            </FlexContainer>
         </FullAuthScreen>
     )
 }
