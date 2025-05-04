@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import plantSpinner from '../plantSpinner.png'
-import imageSpinner from '../imageSpinner.png'
+import plantSpinner from '../images/plantSpinner.png'
+import imageSpinner from '../images/aglaonema.png'
 
 const SpinnerContainer = styled.div`
   width: ${({ width }) => width};

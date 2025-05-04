@@ -164,56 +164,73 @@ export const PlantDetails = () => {
     //         navigate('/bahaar/garden')
     // },[allPlants])
 
+    const handleEmptyCheck = () => {
+        if(plantInput.plantName.trim() === '' || !plantInput.imageFile || plantInput.fertilizer === 'Select an option' || plantInput.note === '' || plantInput.sunlight === 'Select an option' || plantInput.water === 'Select an option' || plantInput.sunlight === 'Select an option'){
+            setNotificationDetails(
+                {
+                    show: true,
+                    variant: 'error',
+                    message: 'fields cannot be empty'
+                }
+            )
+            return false;
+        }
+        else
+        return true;
+    }
+
     const handleSave = async () => {
 
         console.log("PLANT INPUT + ", plantInput)
 
         // console.log("THIS IS THE DATA = ", plantInput, 'And this is the gerden id ', gardenId)
-        try {
-            const formData = new FormData();
-            formData.append("image", plantInput.imageFile);
-            formData.append("water", plantInput.water);
-            formData.append("sunlight", plantInput.sunlight);
-            formData.append("fertilizer", plantInput.fertilizer);
-            formData.append("name", plantInput.plantName);
-            formData.append("note", plantInput.note);
-            formData.append("gardenId", plant.gardenId);
-
-            const response = await axios.post('http://localhost:8080/addPlant', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-
-            const newPlant = response.data; // Adjust based on your API response
-
-            // Update allPlants state directly
-            //setAllPlants(prevPlants => [newPlant, ...prevPlants]);
-            //setCurrPlant(newPlant); // Optionally set current plant to the new one
-            setAddingNewPlant(false);
-            setRefreshPlants(true);
-            setPlantInput({
-                plantName: plant.name,
-                water: 'Select an option',
-                sunlight: 'Select an option',
-                fertilizer: 'Select an option',
-                note: '',
-                imageFile: ''
-            })
-            setImageName('')
-
-            // plantAdded(false);
-            // setTimeout(() => {
-            //     setNotification({
-            //         show: true,
-            //         variant: 'success',
-            //         message: 'new plant added'
-            //     });
-            //     window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-            // }, '500');
-        }
-        catch (e) {
-            console.log(e);
+        if(handleEmptyCheck()){
+            try {
+                const formData = new FormData();
+                formData.append("image", plantInput.imageFile);
+                formData.append("water", plantInput.water);
+                formData.append("sunlight", plantInput.sunlight);
+                formData.append("fertilizer", plantInput.fertilizer);
+                formData.append("name", plantInput.plantName);
+                formData.append("note", plantInput.note);
+                formData.append("gardenId", plant.gardenId);
+    
+                const response = await axios.post('http://localhost:8080/addPlant', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+    
+                const newPlant = response.data; // Adjust based on your API response
+    
+                // Update allPlants state directly
+                //setAllPlants(prevPlants => [newPlant, ...prevPlants]);
+                //setCurrPlant(newPlant); // Optionally set current plant to the new one
+                setAddingNewPlant(false);
+                setRefreshPlants(true);
+                setPlantInput({
+                    plantName: plant.name,
+                    water: 'Select an option',
+                    sunlight: 'Select an option',
+                    fertilizer: 'Select an option',
+                    note: '',
+                    imageFile: ''
+                })
+                setImageName('')
+    
+                // plantAdded(false);
+                // setTimeout(() => {
+                //     setNotification({
+                //         show: true,
+                //         variant: 'success',
+                //         message: 'new plant added'
+                //     });
+                //     window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+                // }, '500');
+            }
+            catch (e) {
+                console.log(e);
+            }
         }
     }
 

@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import monsteraImage from "../images/monsteraBg.jpg";
-import smallLeavesImage from "../images/smallLeavesBg.jpg";
-import roundLeavesImage from "../images/roundLeavesBg.jpg"
+import tropical from "../images/tropical.jpg";
+import leaves from "../images/leaves.jpg";
+import curry from "../images/curry.jpg"
+import logoImage from "../images/plantlogo.png"
 
 const breakpoints = {
     mobile: '480px',
@@ -14,7 +15,7 @@ const FullLandingScreen = styled.div`
     width: 100%;
     position:fixed;
     top:0, left:0;
-    background-image: url(${monsteraImage});
+    background-image: url(${tropical});
     background-size: cover;
     background-position: center;
 
@@ -46,13 +47,14 @@ const StyledMainHeading = styled.h1`
     text-align: center;
     text-shadow: inset 3px 5px rgba(0, 0, 0);
     margin:0;
+    font-family: ui-serif;
 
     @media (max-width: ${breakpoints.tablet}) {
         font-size: 7rem;
     }
 
     @media (max-width: ${breakpoints.mobile}) {
-        font-size: 5rem;
+        font-size: 4rem;
     }
 `
 
@@ -120,17 +122,23 @@ const StyledNav = styled.div`
     justify-content: space-between;
     align-items: center;
     height: 50px;
-    padding: 0 10px;
+    padding: 10px;
+         @media (max-width: ${breakpoints.mobile}) {
+                 padding: 0px 10px;
+            }
 `
 const StyledLogoContainer = styled.div`
-    height: 40px;
-    width: 40px;
+    height: 50px;
+    width: 50px;
     border-radius: 50px;
-    background: white;
+    background: #ffffff00;
+    background-image: url(${logoImage});
+    background-size: cover;
+    background-position: center;
 
      @media (max-width: ${breakpoints.mobile}) {
-                height: 32px;
-                width: 32px
+                height: 38px;
+                width: 38px
             }
 `
 // ----------------------------------------------------------------------------------------------------------
@@ -140,7 +148,7 @@ const FullAuthScreen = styled.div`
     width: 100%;
     position:fixed;
     top:0, left:0;
-    background-image: url(${smallLeavesImage});
+    background-image: url(${leaves});
     background-size: cover;
     background-position: center;
 
@@ -245,7 +253,7 @@ const StyledHeader = styled.div`
 height:30%;
 width: 100%;
 position:relative;
-background-image:  url(${roundLeavesImage});
+background-image:  url(${curry});
 background-size: cover;
 background-position: center;
 z-index: 0;
@@ -586,7 +594,7 @@ const StyledPlantInfo = styled.div`
 const PlantImageContainer = styled.div`
     height: 20rem;
     @media (max-width: ${breakpoints.mobile}) {
-        height:100%;
+        height:227px;
     }
 `
 const PlantInfoContainer = styled.div`

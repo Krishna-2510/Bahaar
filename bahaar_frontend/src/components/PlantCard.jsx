@@ -73,37 +73,54 @@ export const PlantCard = ({ plant, gardenId, edit, plantAdded, refreshPlants, se
         }
     }, [edit]);
 
+    const handleEmptyCheck = () => {
+        if(plantInput.plantName.trim() === '' || !plantInput.imageFile || plantInput.fertilizer === 'Select an option' || plantInput.note === '' || plantInput.sunlight === 'Select an option' || plantInput.water === 'Select an option' || plantInput.sunlight === 'Select an option'){
+            setNotification(
+                {
+                    show: true,
+                    variant: 'error',
+                    message: 'fields cannot be empty'
+                }
+            )
+            return false;
+        }
+        else
+        return true;
+    }
+
     const handleSave = async () => {
 
         console.log("THIS IS THE DATA = ", plantInput, 'And this is the gerden id ', gardenId)
-        try {
-            const formData = new FormData();
-            formData.append("image", plantInput.imageFile);
-            formData.append("water", plantInput.water);
-            formData.append("sunlight", plantInput.sunlight);
-            formData.append("fertilizer", plantInput.fertilizer);
-            formData.append("name", plantInput.plantName);
-            formData.append("note", plantInput.note);
-            formData.append("gardenId", gardenId);
-
-            await axios.post('http://localhost:8080/addPlant', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            
-            plantAdded(false);
-            setTimeout(() => {
-                setNotification({
-                    show: true,
-                    variant: 'success',
-                    message: 'new plant added'
+        if(handleEmptyCheck()){
+            try {
+                const formData = new FormData();
+                formData.append("image", plantInput.imageFile);
+                formData.append("water", plantInput.water);
+                formData.append("sunlight", plantInput.sunlight);
+                formData.append("fertilizer", plantInput.fertilizer);
+                formData.append("name", plantInput.plantName);
+                formData.append("note", plantInput.note);
+                formData.append("gardenId", gardenId);
+    
+                await axios.post('http://localhost:8080/addPlant', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
                 });
-                window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-            }, '500');
-        }
-        catch (e) {
-            console.log(e);
+                
+                plantAdded(false);
+                setTimeout(() => {
+                    setNotification({
+                        show: true,
+                        variant: 'success',
+                        message: 'new plant added'
+                    });
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+                }, '500');
+            }
+            catch (e) {
+                console.log(e);
+            }
         }
     }
 

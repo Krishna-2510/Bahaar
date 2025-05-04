@@ -8,7 +8,8 @@ export const Navbar = () => {
     const userLoggedIn = sessionStorage.getItem('userName') ? true : false;
     return (
     <StyledNav>
-    <StyledLogoContainer/>
+    <StyledLogoContainer>
+    </StyledLogoContainer>
     {userLoggedIn ? 
         <Link to={'/bahaar/account'}><PersonIcon  fontSize="large"  htmlColor="white"/></Link>
         :

@@ -59,31 +59,48 @@ export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refresh
         }
     };
 
-    const handleSave = async () => {
-        try {
-            const formData = new FormData();
-            formData.append("image", gardenInput.imageFile);
-            formData.append("name", gardenInput.gardenName);
-            formData.append("userId", sessionStorage.getItem('userId'));
-
-            await axios.post('http://localhost:8080/addGarden', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            
-            gardenAdded(false);
-            setTimeout(() => {
-                setNotification({
+    const handleEmptyCheck = () => {
+        if(gardenInput.gardenName.trim() === '' || !gardenInput.imageFile){
+            setNotification(
+                {
                     show: true,
-                    variant: 'success',
-                    message: 'new garden added'
-                });
-                window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-            }, '500');
+                    variant: 'error',
+                    message: 'fields cannot be empty'
+                }
+            )
+            return false;
         }
-        catch (e) {
-            console.log(e);
+        else
+        return true;
+    }
+
+    const handleSave = async () => {
+        if(handleEmptyCheck()){
+            try {
+                const formData = new FormData();
+                formData.append("image", gardenInput.imageFile);
+                formData.append("name", gardenInput.gardenName);
+                formData.append("userId", sessionStorage.getItem('userId'));
+    
+                await axios.post('http://localhost:8080/addGarden', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                
+                gardenAdded(false);
+                setTimeout(() => {
+                    setNotification({
+                        show: true,
+                        variant: 'success',
+                        message: 'new garden added'
+                    });
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+                }, '500');
+            }
+            catch (e) {
+                console.log(e);
+            }
         }
     }
 

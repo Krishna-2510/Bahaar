@@ -9,6 +9,7 @@ import { GardenCard } from "../components/GardenCard";
 import { NotificationBox } from "../components/NotificationBox";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import plantpurple from '../images/plantpurple.png'
 
 export const Account = () => {
     const userName = sessionStorage.getItem('userName');
@@ -88,7 +89,7 @@ export const Account = () => {
             </StyledHeader>
             <GardenContainer>
                 {
-                    apiResponse.loading && <Spinner width={"100px"} type={'general'}/>
+                    apiResponse.loading && <Spinner width={"100px"} type={'general'} />
                 }
                 {
                     !apiResponse.loading && apiResponse.error && <h1 style={{ color: "red", textAlign: "center" }}>Some error occurred</h1>
@@ -97,6 +98,7 @@ export const Account = () => {
                     <FlexContainer>
                         <StyledAuthHeading>You don't have any gardens</StyledAuthHeading>
                         <StyledAuthText color="#A5A5A5">Create your first garden now. <StyledSpan onClick={() => setAddingNewGarden(true)}>Create</StyledSpan></StyledAuthText>
+                        <img width={'100px'} src={plantpurple}></img>
                     </FlexContainer>
                 }
                 {!apiResponse.loading && !apiResponse.error && apiResponse.data.map((garden) =>

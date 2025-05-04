@@ -3,21 +3,18 @@ import { FlexContainer, GardenContainer, PlantContainer, StyledAuthHeading, Styl
 import { Navbar } from "../components/Navbar";
 import { MyButton } from "../components/MyButton";
 import AddIcon from '@mui/icons-material/Add';
-import { GardenCard } from "../components/GardenCard";
 import { NotificationBox } from "../components/NotificationBox";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PlantCard } from "../components/PlantCard";
 import axios from "axios";
 import Spinner from "../components/Spinner";
+import plantpurple from '../images/plantpurple.png'
 
 export const GardenDetails = () => {
 
     const location = useLocation();
     const garden = location.state.garden || {};
     const isEdit = location.state.edit;
-
-    console.log("LOCATION = ", location.state)
-    const [plants, setPlants] = useState([]);
     const [apiResponse, setApiResponse] = useState({
         data: [],
         loading: false,
@@ -66,7 +63,6 @@ export const GardenDetails = () => {
         })
         try {
             const response = await axios.get(`http://localhost:8080/${garden.id}/recentPlants`);
-            setPlants(response.data);
             setApiResponse({
                 data: response.data,
                 loading: false,
@@ -122,6 +118,7 @@ export const GardenDetails = () => {
                     <FlexContainer>
                         <StyledAuthHeading>You don't have any plants</StyledAuthHeading>
                         <StyledAuthText color="#A5A5A5">Create your first plant now. <StyledSpan onClick={() => setAddingNewPlant(true)}>Create</StyledSpan></StyledAuthText>
+                        <img width={'100px'} src={plantpurple}></img>
                     </FlexContainer>
                 </GardenContainer>
             }

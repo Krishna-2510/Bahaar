@@ -6,7 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../actions/userActions";
-
+import loader from "../images/loader.svg"
 
 export const RegistrationForm = ({toggleLogin}) => {
     const [fullName, setFullname] = useState('');
@@ -19,40 +19,60 @@ export const RegistrationForm = ({toggleLogin}) => {
         message:''
     });
     const [showInitialText, setShowinitialtext] = useState(true);
+    const [showWarning, setShowWarning] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const handleCheck = () => {
+        setApiResponse({
+            ...apiResponse,
+            loading: false,
+            error: false
+        })
+        if(email.trim() === '' || password.trim() === '' || fullName.trim() === ''){
+            setShowWarning(true);
+            return false;
+        }
+        else{
+            setShowWarning(false);
+            return true;
+        }
+
+    }
 
     const handleRegister = async() => {
         // console.log("Inside fn with data =", {'name': fullName, 'email':email , 'password': password});
         setShowinitialtext(false);
-        setApiResponse({
-            ...apiResponse,
-            loading: true
-        })
-        try{
-            const response = await axios.post('http://localhost:8080/register', 
-            {'name': fullName, 'email':email , 'password': password});
-            // console.log("RES=", response);
+        if(handleCheck()){
             setApiResponse({
                 ...apiResponse,
-                loading: false,
-                data: response.data.user,
-                message: response.data.message
-            });
-            dispatch(loginSuccess(response.data.user));
-            sessionStorage.setItem('userName', response.data.user.name);
-            sessionStorage.setItem('userId', response.data.user.id);
-            setTimeout(loadLandingPage, 2000);
-        }
-        catch(e){
-            // console.log("ERROR ", e);
-            setApiResponse({
-                ...apiResponse,
-                loading: false,
-                error: true,
-                message: e.response.data.message
+                loading: true
             })
+            try{
+                const response = await axios.post('http://localhost:8080/register', 
+                {'name': fullName, 'email':email , 'password': password});
+                // console.log("RES=", response);
+                setApiResponse({
+                    ...apiResponse,
+                    loading: false,
+                    error: false,
+                    data: response.data.user,
+                    message: response.data.message
+                });
+                dispatch(loginSuccess(response.data.user));
+                sessionStorage.setItem('userName', response.data.user.name);
+                sessionStorage.setItem('userId', response.data.user.id);
+                setTimeout(loadLandingPage, 2000);
+            }
+            catch(e){
+                // console.log("ERROR ", e);
+                setApiResponse({
+                    ...apiResponse,
+                    loading: false,
+                    error: true,
+                    message: e.response.data.message
+                })
+            }
         }
     }
 
@@ -65,10 +85,12 @@ export const RegistrationForm = ({toggleLogin}) => {
     return(
         <StyledAuthContainer>
         <StyledAuthHeading>Register</StyledAuthHeading>
-        {apiResponse.loading && <StyledAuthText color="cyan">Loading...</StyledAuthText>}
+        {/* {apiResponse.loading && <StyledAuthText color="cyan">Loading...</StyledAuthText>} */}
+        {apiResponse.loading && <img width={'40px'} src={loader}/>}
         {apiResponse.error && <StyledAuthText color="#ff3333">{apiResponse.message}</StyledAuthText>}
         {!apiResponse.loading && !apiResponse.error && <StyledAuthText color="#749F2A">{apiResponse.message}</StyledAuthText>}
         {showInitialText && <StyledAuthText color="#A5A5A5">Create your new account</StyledAuthText>}
+        {showWarning && <StyledAuthText color="#d4c949">Please fill all the fields !</StyledAuthText>}
         <InputBox iconType={'person'} placeholder={'Enter your full name'} value={fullName} onChange={(e) => setFullname(e.target.value)}/>
         <InputBox iconType={'email'} placeholder={'Enter your email'} value={email} onChange={(e) => setEmail(e.target.value)}/>
         <InputBox iconType={'password'} placeholder={'Enter your password'} value={password} onChange={(e) => setPassword(e.target.value)}/>
