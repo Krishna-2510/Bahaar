@@ -130,37 +130,6 @@ public class PlantServiceImpl implements PlantService {
         return results.getMappedResults();
     }
 
-//    @Override
-//    public List<Plant> findMostRecentPlantByGardenId(String gardenId) {
-//
-//        Aggregation aggregation = Aggregation.newAggregation(
-//                // Step 1: Match by gardenId
-//                Aggregation.match(Criteria.where("gardenId").is(gardenId)),
-//
-//                // Step 2: Sort by createdAt descending
-//                Aggregation.sort(Sort.by(Sort.Direction.DESC, "createdAt")),
-//
-//                // Step 3: Group by name and get the first document (most recent)
-//                Aggregation.group("name")
-//                        .first("$$ROOT").as("latestPlant")
-//                        .last("$$ROOT").as("oldestPlant"),// Get the entire document
-//
-//                // Step 4: Replace root with the latestPlant
-//                Aggregation.replaceRoot("latestPlant"),
-//
-//                Aggregation.project()
-//                        .and("name").as("name") // Include the name
-//                        .and("createdAt").as("createdAt") // Include the createdAt of the latest plant
-//                        .and("oldestPlant.imageUrl").as("imageUrl"),
-//
-//                // Step 5: Optionally sort by createdAt again if you want a specific order
-//                Aggregation.sort(Sort.by(Sort.Direction.DESC, "createdAt"))
-//        );
-//
-//        AggregationResults<Plant> results = mongoTemplate.aggregate(aggregation, Plant.class, Plant.class);
-//        return results.getMappedResults();
-//    }
-
     @Override
     public List<Plant> findByNameAndGardenId(String name, String gardenId) {
         Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
