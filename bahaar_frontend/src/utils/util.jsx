@@ -24,7 +24,7 @@ export const calculateAge = (birthDateStr) => {
     // Calculate age in months
     const ageInMonths = Math.floor(ageInDays / 30);
     if (ageInMonths < 12) {
-        return `${ageInMonths} months`;
+        return `${ageInMonths} month${ageInMonths === 1 ? '' : 's'}`;
     }
 
     // Calculate age in years
@@ -33,8 +33,8 @@ export const calculateAge = (birthDateStr) => {
 
     // Adjust for the case where the birthday hasn't occurred yet this year
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-        return `${ageInYears - 1} years`;
+        return `${ageInYears - 1} year${ageInYears === 1 ? '' : 's'}`;
     }
 
-    return `${ageInYears} years`;
+    return `${ageInYears} year${ageInYears === 1 ? '' : 's'}`;
 }

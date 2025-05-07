@@ -809,6 +809,7 @@ const StyledPlantDetailsImage = styled.img`
     box-shadow: 4px 4px 8px rgb(0, 0 ,0 ,80%);
     @media (max-width: ${breakpoints.mobile}) {
         width: 100%;
+        height: 415px;
     }
 `
 
