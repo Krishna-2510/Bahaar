@@ -10,6 +10,7 @@ import { getTodaysDate } from "../utils/util";
 import { useNavigate } from "react-router-dom";
 import ClearIcon from '@mui/icons-material/Clear';
 import Spinner from "./Spinner";
+import { apiendpoint } from "../utils/constantData";
 
 export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refreshGardens, onClickHandler}) => {
 
@@ -25,7 +26,9 @@ export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refresh
     const fetchImage = async () => {
         setLoading(true);
         try {
-            const response = await axios.get(garden.imageUrl);
+            // console.log("IMAGE URL = ", garden.imageUrl)
+            const newurl = garden.imageUrl.replace("http://localhost:8080", apiendpoint)
+            const response = await axios.get(newurl);
             const base64Image = `data:image/jpeg;base64,${response.data.data}`;
             setImagesrc(base64Image);
             setLoading(false);
@@ -82,7 +85,7 @@ export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refresh
                 formData.append("name", gardenInput.gardenName);
                 formData.append("userId", sessionStorage.getItem('userId'));
     
-                await axios.post('http://localhost:8080/addGarden', formData, {
+                await axios.post(`${apiendpoint}/addGarden`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -106,7 +109,7 @@ export const GardenCard = ({ garden, edit, gardenAdded, setNotification, refresh
 
     const handleDelete = async () => {
          try{
-            const res = await axios.delete(`http://localhost:8080/deleteGarden/${garden.id}`);
+            const res = await axios.delete(`${apiendpoint}/deleteGarden/${garden.id}`);
             console.log("After res = ", res);
             refreshGardens(true);
             setNotification({

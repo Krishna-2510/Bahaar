@@ -10,6 +10,7 @@ import { NotificationBox } from "../components/NotificationBox";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import plantpurple from '../images/plantpurple.png'
+import { apiendpoint } from "../utils/constantData";
 
 export const Account = () => {
     const userName = sessionStorage.getItem('userName');
@@ -36,7 +37,7 @@ export const Account = () => {
             loading: true
         })
         try {
-            const response = await axios.get(`http://localhost:8080/${userId}/gardens`);
+            const response = await axios.get(`${apiendpoint}/${userId}/gardens`);
             // setGardens(response.data);
             setApiResponse({
                 data: response.data,

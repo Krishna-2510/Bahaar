@@ -7,7 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ClearIcon from '@mui/icons-material/Clear';
 import axios from "axios";
 import { calculateAge } from "../utils/util";
-import { fertilizerOptions, sunlightOptions, waterOptions } from "../utils/constantData";
+import { apiendpoint, fertilizerOptions, sunlightOptions, waterOptions } from "../utils/constantData";
 import { useNavigate } from "react-router-dom";
 import Spinner from "./Spinner";
 
@@ -23,7 +23,8 @@ export const PlantCard = ({ plant, gardenId, edit, plantAdded, refreshPlants, se
     const fetchImage = async () => {
         setLoading(true);
         try {
-            const response = await axios.get(plant.imageUrl);
+            const newurl = plant.imageUrl.replace("http://localhost:8080", apiendpoint)
+            const response = await axios.get(newurl);
             const base64Image = `data:image/jpeg;base64,${response.data.data}`;
             setImagesrc(base64Image);
             setLoading(false);
@@ -102,7 +103,7 @@ export const PlantCard = ({ plant, gardenId, edit, plantAdded, refreshPlants, se
                 formData.append("note", plantInput.note);
                 formData.append("gardenId", gardenId);
     
-                await axios.post('http://localhost:8080/addPlant', formData, {
+                await axios.post(`${apiendpoint}/addPlant`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -126,7 +127,7 @@ export const PlantCard = ({ plant, gardenId, edit, plantAdded, refreshPlants, se
 
     const handleDelete = async () => {
         try{
-           const res = await axios.delete(`http://localhost:8080/deleteAllPlant/${plant.name}/${gardenId}`);
+           const res = await axios.delete(`${apiendpoint}/deleteAllPlant/${plant.name}/${gardenId}`);
            console.log("After res = ", res);
            refreshPlants(true);
            setNotification({

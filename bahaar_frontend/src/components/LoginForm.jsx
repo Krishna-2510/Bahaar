@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { loginSuccess } from "../actions/userActions";
 import loader from "../images/loader.svg"
+import { apiendpoint } from "../utils/constantData";
 
 export const LoginForm = ({ toggleLogin }) => {
 
@@ -49,7 +50,7 @@ export const LoginForm = ({ toggleLogin }) => {
                 error: false
             })
             try {
-                const response = await axios.post('http://localhost:8080/signin',
+                const response = await axios.post(`${apiendpoint}/signin`,
                     { 'email': email, 'password': password });
                 console.log("RES=", response);
                 setApiresponse({

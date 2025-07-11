@@ -47,3 +47,5 @@ export const fertilizerMapping = {
     monthly: 'Monthly',
     onlyWhenNeeded: 'Only when needed'
 }
+
+export const apiendpoint = "https://bahaar.onrender.com"

@@ -5,7 +5,7 @@ import { MyButton } from "../components/MyButton";
 import SaveIcon from '@mui/icons-material/Save';
 import AddIcon from '@mui/icons-material/Add';
 import { calculateAge } from "../utils/util";
-import { fertilizerMapping, fertilizerOptions, sunlightMapping, sunlightOptions, waterMapping, waterOptions } from "../utils/constantData";
+import { apiendpoint, fertilizerMapping, fertilizerOptions, sunlightMapping, sunlightOptions, waterMapping, waterOptions } from "../utils/constantData";
 import { AnimatedContent, GardenContainer, GardenEmptyImgContainer, MainContainer, PlantContainer, PlantDataContainer, PlantDetailsContainer, StyledLeftChevron, StyledPlantData1, StyledPlantData2, StyledPlantData3, StyledPlantDetailsImage, StyledPlantNote, StyledRightChevron, StyledSelect, StyledTextareaPlant } from "../style/style";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -67,7 +67,8 @@ export const PlantDetails = () => {
 
     const fetchImage = async () => {
         try {
-            const response = await axios.get(currPlant.imageUrl);
+            const newurl = currPlant.imageUrl.replace("http://localhost:8080", apiendpoint)
+            const response = await axios.get(newurl);
             const base64Image = `data:image/jpeg;base64,${response.data.data}`;
             setCurrImage(base64Image);
         }
@@ -83,7 +84,7 @@ export const PlantDetails = () => {
             loading: true
         })
         try {
-            const response = await axios.get(`http://localhost:8080/${plant.name}/${plant.gardenId}`);
+            const response = await axios.get(`${apiendpoint}/${plant.name}/${plant.gardenId}`);
             setAllPlants(response.data);
             setApiResponse({
                 data: response.data,
@@ -195,7 +196,7 @@ export const PlantDetails = () => {
                 formData.append("note", plantInput.note);
                 formData.append("gardenId", plant.gardenId);
     
-                const response = await axios.post('http://localhost:8080/addPlant', formData, {
+                const response = await axios.post('https://bahaar.onrender.com/addPlant', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }

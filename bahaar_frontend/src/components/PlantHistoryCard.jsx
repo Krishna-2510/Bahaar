@@ -6,7 +6,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from "axios";
 import { calculateAge } from "../utils/util";
-import { fertilizerOptions, sunlightOptions, waterOptions } from "../utils/constantData";
+import { apiendpoint, fertilizerOptions, sunlightOptions, waterOptions } from "../utils/constantData";
 import { useNavigate } from "react-router-dom";
 import Spinner from "./Spinner";
 
@@ -18,7 +18,8 @@ export const PlantHistoryCard = ({ plant, isActive, onClick, gardenId, edit, pla
     const fetchImage = async () => {
         setLoading(true);
         try {
-            const response = await axios.get(plant.imageUrl);
+            const newurl = plant.imageUrl.replace("http://localhost:8080", apiendpoint)
+            const response = await axios.get(newurl);
             const base64Image = `data:image/jpeg;base64,${response.data.data}`;
             setImagesrc(base64Image);
             setLoading(false);
@@ -35,7 +36,7 @@ export const PlantHistoryCard = ({ plant, isActive, onClick, gardenId, edit, pla
 
     const handleDelete = async () => {
         try{
-           const res = await axios.delete(`http://localhost:8080/deletePlant/${gardenId}/${plant.id}`);
+           const res = await axios.delete(`${apiendpoint}/deletePlant/${gardenId}/${plant.id}`);
            console.log("After res = ", res);
            refreshPlants(true);
            setNotification({

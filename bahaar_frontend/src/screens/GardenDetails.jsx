@@ -9,6 +9,7 @@ import { PlantCard } from "../components/PlantCard";
 import axios from "axios";
 import Spinner from "../components/Spinner";
 import plantpurple from '../images/plantpurple.png'
+import { apiendpoint } from "../utils/constantData";
 
 export const GardenDetails = () => {
 
@@ -62,7 +63,7 @@ export const GardenDetails = () => {
             loading: true
         })
         try {
-            const response = await axios.get(`http://localhost:8080/${garden.id}/recentPlants`);
+            const response = await axios.get(`${apiendpoint}/${garden.id}/recentPlants`);
             setApiResponse({
                 data: response.data,
                 loading: false,

@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../actions/userActions";
 import loader from "../images/loader.svg"
+import { apiendpoint } from "../utils/constantData";
 
 export const RegistrationForm = ({toggleLogin}) => {
     const [fullName, setFullname] = useState('');
@@ -49,7 +50,7 @@ export const RegistrationForm = ({toggleLogin}) => {
                 loading: true
             })
             try{
-                const response = await axios.post('http://localhost:8080/register', 
+                const response = await axios.post(`${apiendpoint}/register`, 
                 {'name': fullName, 'email':email , 'password': password});
                 // console.log("RES=", response);
                 setApiResponse({
